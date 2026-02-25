@@ -32,41 +32,41 @@ The goal is a working, shippable product. Features are included only if they are
 
 ### 1.2 Core Utilities (`lib/`)
 
-- [ ] `utils.ts` — helper functions (`cn()`, formatters)
-- [ ] `validations.ts` — Zod schemas
+- [x] `utils.ts` — helper functions (`cn()`, formatters)
+- [x] `validations.ts` — Zod schemas
   - `CompareRequestSchema` — prompt string, modelIds array (max 3, enforced here), optional maxTokens
   - `ModelFilterSchema` — type, limit, offset query params
   - Error response schemas
-- [ ] `rate-limiter.ts` — in-memory rate limiting
+- [x] `rate-limiter.ts` — in-memory rate limiting
   - 10 requests per 10 minutes per IP
   - Automatic cleanup of expired entries
   - Note: state resets on serverless cold starts; acceptable for MVP
-- [ ] `huggingface.ts` — HuggingFace API client
+- [x] `huggingface.ts` — HuggingFace API client
   - `queryModel()` with retry logic
   - Cold start handling: 503 → 60s wait → single retry
   - Metrics: token count, elapsed time, tokens/second
-- [ ] `models.ts` — model data helpers
+- [x] `models.ts` — model data helpers
   - Load and filter from `data/models.json`
   - Metadata accessors
 
 ### 1.3 Type Definitions (`types/`)
 
-- [ ] `models.ts` — `LiveModel`, `StaticBenchmark`, `ModelMetrics` interfaces
-- [ ] `api.ts` — `CompareRequest`, `CompareResponse`, `ErrorResponse`
-- [ ] `index.ts` — barrel exports
+- [x] `models.ts` — `LiveModel`, `StaticBenchmark`, `ModelMetrics` interfaces
+- [x] `api.ts` — `CompareRequest`, `CompareResponse`, `ErrorResponse`
+- [x] `index.ts` — barrel exports
 
 ### 1.4 Static Data (`data/`)
 
-- [ ] `models.json` — 8 models
+- [x] `models.json` — 8 models
   - 5 live: CodeLlama, StarCoder, Mistral, DeepSeek Coder, Phi-2
   - 3 static: GPT-4, Claude 3, Gemini Pro — benchmark data only, no live calls
 
 ### 1.5 UI Primitives (`components/ui/`)
 
-- [ ] `Button.tsx` — variants: default, outline, ghost
-- [ ] `Card.tsx` — container with optional padding/border
-- [ ] `Badge.tsx` — live/static status labels
-- [ ] `LoadingSpinner.tsx` — loading state indicator
+- [x] `Button.tsx` — variants: default, outline, ghost
+- [x] `Card.tsx` — container with optional padding/border
+- [x] `Badge.tsx` — live/static status labels
+- [x] `LoadingSpinner.tsx` — loading state indicator
 
 **Deliverables:**
 
@@ -87,22 +87,22 @@ The goal is a working, shippable product. Features are included only if they are
 
 ### 2.1 Health Check
 
-- [ ] `app/api/health/route.ts`
+- [ ] `app/api/v1/health/route.ts`
   - GET — returns server status
   - No rate limiting
 
 ### 2.2 Models API
 
-- [ ] `app/api/models/route.ts`
-  - GET `/api/models` — list all models
+- [ ] `app/api/v1/models/route.ts`
+  - GET `/api/v1/models` — list all models
   - Query params: `type` (live|static), `limit`, `offset`
   - Filtered from `data/models.json`
   - Rate limited
 
 ### 2.3 Compare API
 
-- [ ] `app/api/compare/route.ts`
-  - POST `/api/compare` — core comparison endpoint
+- [ ] `app/api/v1/compare/route.ts`
+  - POST `/api/v1/compare` — core comparison endpoint
   - Request: `{ prompt: string, modelIds: string[], maxTokens?: number }`
   - Zod validation (max 3 modelIds enforced here as well as client-side)
   - Rate limiting: 10 req/10min
@@ -310,9 +310,9 @@ Phase 1 (Foundation)
 └── components/ui/*.tsx
 
 Phase 2 (Backend)
-├── app/api/health/route.ts
-├── app/api/models/route.ts
-└── app/api/compare/route.ts
+├── app/api/v1/health/route.ts
+├── app/api/v1/models/route.ts
+└── app/api/v1/compare/route.ts
 
 Phase 3 (Frontend)
 ├── components/PromptInput.tsx
