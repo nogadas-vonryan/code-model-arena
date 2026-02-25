@@ -1,0 +1,97 @@
+[
+  {
+    "id": "codellama-7b",
+    "name": "CodeLlama 7B",
+    "type": "live",
+    "provider": "huggingface",
+    "modelId": "codellama/CodeLlama-7b-hf",
+    "description": "Meta's code-specialized Llama model, fine-tuned for code generation and completion.",
+    "contextWindow": 16384,
+    "tags": ["code-generation", "python", "javascript", "open-source"]
+  },
+  {
+    "id": "starcoder-15b",
+    "name": "StarCoder 15B",
+    "type": "live",
+    "provider": "huggingface",
+    "modelId": "bigcode/starcoder",
+    "description": "BigCode's StarCoder model trained on 80+ programming languages from GitHub.",
+    "contextWindow": 8192,
+    "tags": ["code-generation", "multi-language", "open-source"]
+  },
+  {
+    "id": "mistral-7b",
+    "name": "Mistral 7B",
+    "type": "live",
+    "provider": "huggingface",
+    "modelId": "mistralai/Mistral-7B-v0.1",
+    "description": "Mistral AI's 7B model with excellent code capabilities and efficiency.",
+    "contextWindow": 8192,
+    "tags": ["code-generation", "general-purpose", "open-source"]
+  },
+  {
+    "id": "deepseek-coder-6.7b",
+    "name": "DeepSeek Coder 6.7B",
+    "type": "live",
+    "provider": "huggingface",
+    "modelId": "deepseek-ai/deepseek-coder-6.7b-instruct",
+    "description": "DeepSeek's code-specific model with state-of-the-art performance on coding benchmarks.",
+    "contextWindow": 16384,
+    "tags": ["code-generation", "instruction-tuned", "open-source"]
+  },
+  {
+    "id": "phi-2",
+    "name": "Phi-2",
+    "type": "live",
+    "provider": "huggingface",
+    "modelId": "microsoft/phi-2",
+    "description": "Microsoft's 2.7B parameter model with strong reasoning and coding capabilities.",
+    "contextWindow": 2048,
+    "tags": ["code-generation", "small-model", "open-source"]
+  },
+  {
+    "id": "gpt-4",
+    "name": "GPT-4",
+    "type": "static",
+    "provider": "OpenAI",
+    "benchmarkUrl": "https://openai.com/research/gpt-4",
+    "description": "OpenAI's flagship model with exceptional code generation and reasoning abilities.",
+    "benchmarks": {
+      "humanEval": 67.0,
+      "mbpp": 74.4,
+      "multipl-e": 88.4
+    },
+    "contextWindow": 128000,
+    "tags": ["code-generation", "reasoning", "closed-source"]
+  },
+  {
+    "id": "claude-3-opus",
+    "name": "Claude 3 Opus",
+    "type": "static",
+    "provider": "Anthropic",
+    "benchmarkUrl": "https://www.anthropic.com/claude",
+    "description": "Anthropic's most capable model with excellent coding and reasoning performance.",
+    "benchmarks": {
+      "humanEval": 84.9,
+      "mbpp": 73.0,
+      "multipl-e": 84.7
+    },
+    "contextWindow": 200000,
+    "tags": ["code-generation", "reasoning", "closed-source"]
+  },
+  {
+    "id": "gemini-pro",
+    "name": "Gemini Pro",
+    "type": "static",
+    "provider": "Google",
+    "benchmarkUrl": "https://deepmind.google/technologies/gemini",
+    "description": "Google's multimodal model with strong code generation capabilities.",
+    "benchmarks": {
+      "humanEval": 71.9,
+      "mbpp": 62.2,
+      "multipl-e": 75.9
+    },
+    "contextWindow": 128000,
+    "tags": ["code-generation", "multimodal", "closed-source"]
+  }
+]
