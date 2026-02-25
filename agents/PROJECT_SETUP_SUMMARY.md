@@ -40,9 +40,12 @@ This document summarizes all the files created for the Code Model Arena project 
 model-arena/
 ├── app/                        # Next.js App Router
 │   ├── api/
-│   │   ├── compare/route.ts    # Model comparison endpoint
-│   │   ├── models/route.ts     # Model metadata endpoint
-│   │   └── health/route.ts     # Health check
+│   │   └── v1/                 # API v1 endpoints
+│   │       ├── compare/route.ts    # POST /api/v1/compare
+│   │       ├── models/route.ts     # GET /api/v1/models
+│   │       ├── models/[id]/route.ts # GET /api/v1/models/{id}
+│   │       ├── health/route.ts     # GET /api/v1/health
+│   │       └── versions/route.ts   # GET /api/v1/versions
 │   ├── layout.tsx
 │   ├── page.tsx
 │   └── globals.css
@@ -324,8 +327,10 @@ for lib/rate-limiter.ts
 
 ### OpenAPI Spec
 
-- **Lines:** ~800
-- **Endpoints:** 4 (compare, models, models/{id}, health)
+- **Lines:** ~600
+- **Version:** 0.1.0
+- **Base URL:** `/api/v1`
+- **Endpoints:** 5 (compare, models, models/{id}, health, versions)
 - **Examples:** 10+ request/response examples
 - **Schemas:** 10+ reusable schemas
 
