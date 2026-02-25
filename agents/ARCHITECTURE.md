@@ -27,6 +27,8 @@ Code Model Arena is a Next.js 14 application that compares code generation model
 - **Linting:** ESLint (Next.js config + Prettier)
 - **Formatting:** Prettier 3+
 - **Git Hooks:** Husky + lint-staged
+  - `pre-commit`: Lints and formats staged files
+  - `commit-msg`: Validates Conventional Commits
 - **Type Checking:** TypeScript strict mode
 - **API Contract:** OpenAPI 3.0
 

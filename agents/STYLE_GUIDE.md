@@ -663,6 +663,54 @@ docs/api-documentation
 refactor/validation-layer
 ```
 
+## Linting & Formatting
+
+### Available Commands
+
+```bash
+# Lint all files
+npm run lint
+
+# Format all files
+npm run format
+```
+
+### Pre-commit Hooks (Husky)
+
+The project uses Husky with lint-staged to automatically lint and format staged files before commit. This ensures code quality without slowing down development.
+
+**What happens on commit:**
+
+1. Husky triggers `pre-commit` hook
+2. lint-staged runs on staged files only:
+   - `.ts`, `.tsx`, `.js`, `.jsx` → ESLint (fix) + Prettier
+   - `.json` → Prettier
+3. If any tool makes changes, the commit is aborted
+4. Stage the formatted files and retry commit
+
+**Bypassing hooks (rare cases):**
+
+```bash
+git commit --no-verify -m "hotfix: urgent fix"
+```
+
+**Note:** Avoid bypassing hooks unless absolutely necessary.
+
+### Commit Message Validation
+
+Commit messages are validated with Conventional Commits:
+
+```
+feat: add new feature
+fix: resolve bug
+docs: update documentation
+chore: maintenance
+refactor: code restructure
+test: add tests
+```
+
+Invalid messages will be rejected with an error.
+
 ## File Organization
 
 ### Barrel Exports
