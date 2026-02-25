@@ -45,13 +45,12 @@ model-arena/
 │   ├── page.tsx                # Homepage
 │   └── globals.css             # Global styles
 │
-├── components/                 # React components
-│   ├── PromptInput.tsx         # Textarea for code prompt
-│   ├── ModelSelector.tsx       # Checkbox selector (max 3)
-│   ├── ResponseGrid.tsx        # Side-by-side result display
-│   ├── MetricsChart.tsx        # Recharts visualization
-│   ├── CostCalculator.tsx      # Cost estimation widget
-│   └── ui/                     # Reusable UI primitives
+├── components/                    # React components
+│   ├── PromptInput.tsx           # Textarea for code prompt
+│   ├── ModelSelector.tsx         # Checkbox selector (max 3)
+│   ├── ResponseGrid.tsx          # Side-by-side result display
+│   ├── MetricsChart.tsx          # Recharts visualization
+│   └── ui/                       # Reusable UI primitives
 │       ├── Button.tsx
 │       ├── Card.tsx
 │       ├── Badge.tsx
@@ -75,15 +74,10 @@ model-arena/
 ├── openapi/                    # API documentation
 │   └── spec.yaml               # OpenAPI 3.0 specification
 │
-├── skills/                     # Automation scripts
-│   ├── benchmark-runner/       # Update static benchmarks
-│   └── data-updater/           # Sync model availability
+├── tests/                        # Test suites
+│   └── unit/                     # Unit tests (Vitest)
 │
-├── tests/                      # Test suites
-│   ├── unit/                   # Unit tests (Vitest)
-│   └── e2e/                    # End-to-end tests (Playwright)
-│
-└── .agents/                    # AI assistant context
+└── agents/                       # AI assistant context
     ├── README.md
     ├── ARCHITECTURE.md         # This file
     ├── STYLE_GUIDE.md

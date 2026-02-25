@@ -9,8 +9,8 @@ Use this prompt when creating or updating documentation for the Code Model Arena
 I need to create/update documentation following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for project structure
-- Read `.agents/STYLE_GUIDE.md` for conventions
+- Read `agents/ARCHITECTURE.md` for project structure
+- Read `agents/STYLE_GUIDE.md` for conventions
 - Review existing documentation for consistency
 
 **Requirements:**
@@ -34,7 +34,7 @@ Please write documentation that is clear, accurate, and helpful.
 I need to create the main README.md following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for technical details
+- Read `agents/ARCHITECTURE.md` for technical details
 - Review `openapi/spec.yaml` for API information
 - Check existing component files for features
 
@@ -196,7 +196,7 @@ model-arena/
 ├── openapi/          # API documentation
 ├── skills/           # Automation scripts
 ├── tests/            # Test suites
-└── .agents/          # AI assistant context
+└── agents/                       # AI assistant context
 ```
 
 ## API Documentation
@@ -239,7 +239,7 @@ Contributions are welcome! Please follow these steps:
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Read `.agents/` documentation for conventions
+3. Read `agents/` documentation for conventions
 4. Make your changes
 5. Run tests (`npm test`)
 6. Commit with conventional commits (`feat: add new feature`)
@@ -266,7 +266,7 @@ This project is licensed under the MIT License - see [LICENSE](LICENSE) file for
 I need to add JSDoc comments to a function following our conventions.
 
 **Context Files:**
-- Read `.agents/STYLE_GUIDE.md` for comment conventions
+- Read `agents/STYLE_GUIDE.md` for comment conventions
 
 **Requirements:**
 
@@ -333,7 +333,7 @@ I need to document a new API endpoint in OpenAPI spec.
 
 **Context Files:**
 - Read `openapi/spec.yaml` for existing patterns
-- Read `.agents/ARCHITECTURE.md` for API conventions
+- Read `agents/ARCHITECTURE.md` for API conventions
 
 **Requirements:**
 

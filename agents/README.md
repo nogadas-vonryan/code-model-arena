@@ -4,10 +4,10 @@
 
 ```bash
 # 1. Point the AI assistant to the relevant context
-"Read .agents/ARCHITECTURE.md and .agents/STYLE_GUIDE.md before we start"
+"Read agents/ARCHITECTURE.md and agents/STYLE_GUIDE.md before we start"
 
 # 2. Use feature-specific prompts
-"Follow .agents/PROMPTS/api-endpoint.md to create a new API route"
+"Follow agents/PROMPTS/api-endpoint.md to create a new API route"
 
 # 3. AI now understands:
 #    - Project structure
@@ -35,7 +35,7 @@
 ## Directory Structure
 
 ```
-.agents/
+agents/
 ├── README.md           ← You are here
 ├── ARCHITECTURE.md     ← Tech stack, folder structure, patterns
 ├── STYLE_GUIDE.md      ← Code conventions, naming, formatting
@@ -89,15 +89,15 @@ When a developer references these files:
 
 ## Example Usage
 
-### Manual Workflow with .agents/
+### Manual Workflow with agents/
 
 **Developer:** "Create an API endpoint for comparing models"
 
 **AI:** *Creates endpoint with inconsistent error handling, wrong validation library, different file structure*
 
-### Context-Aware Workflow with .agents/
+### Context-Aware Workflow with agents/
 
-**Developer:** "Read .agents/ARCHITECTURE.md and .agents/PROMPTS/api-endpoint.md, then create an API endpoint for comparing models"
+**Developer:** "Read agents/ARCHITECTURE.md and agents/PROMPTS/api-endpoint.md, then create an API endpoint for comparing models"
 
 **AI:** *Creates endpoint following project patterns: Zod validation, rate limiting, proper error responses, correct folder structure*
 

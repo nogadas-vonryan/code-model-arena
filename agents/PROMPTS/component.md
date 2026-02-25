@@ -9,8 +9,8 @@ Use this prompt when creating new React components in the Code Model Arena proje
 I need to create a new React component following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for component patterns
-- Read `.agents/STYLE_GUIDE.md` for React conventions
+- Read `agents/ARCHITECTURE.md` for component patterns
+- Read `agents/STYLE_GUIDE.md` for React conventions
 - Reference existing components in `components/` for consistency
 
 **Requirements:**
@@ -54,8 +54,8 @@ Please implement following our component structure from STYLE_GUIDE.md.
 I need to create a new React component following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for component patterns
-- Read `.agents/STYLE_GUIDE.md` for React conventions
+- Read `agents/ARCHITECTURE.md` for component patterns
+- Read `agents/STYLE_GUIDE.md` for React conventions
 - Reference existing components in `components/` for consistency
 
 **Requirements:**

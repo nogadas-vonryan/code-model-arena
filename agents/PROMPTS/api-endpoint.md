@@ -9,8 +9,8 @@ Use this prompt when creating new API routes in the Code Model Arena project.
 I need to create a new API endpoint following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for API route patterns
-- Read `.agents/STYLE_GUIDE.md` for coding conventions
+- Read `agents/ARCHITECTURE.md` for API route patterns
+- Read `agents/STYLE_GUIDE.md` for coding conventions
 - Reference `openapi/spec.yaml` for API contract standards
 
 **Requirements:**
@@ -59,8 +59,8 @@ Please implement following our established patterns from ARCHITECTURE.md.
 I need to create a new API endpoint following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for API route patterns
-- Read `.agents/STYLE_GUIDE.md` for coding conventions
+- Read `agents/ARCHITECTURE.md` for API route patterns
+- Read `agents/STYLE_GUIDE.md` for coding conventions
 - Reference `openapi/spec.yaml` for API contract standards
 
 **Requirements:**

@@ -95,7 +95,7 @@ model-arena/
 
 ---
 
-## 3. .agents/ Directory (AI-Assisted Development)
+## 3. agents/ Directory (AI-Assisted Development)
 
 ### 3.1 README.md
 **Purpose:** Explains the AI-assisted development workflow
@@ -254,7 +254,7 @@ Template for creating documentation with:
 - **Consistent patterns** across the codebase
 - **Production-ready** from day one
 - **Well-documented** for future maintenance
-- **AI-friendly** with .agents/ context
+- **AI-friendly** with agents/ context
 
 ### For Portfolio:
 - **Professional structure** impresses recruiters
@@ -263,34 +263,34 @@ Template for creating documentation with:
 - **Thoughtful architecture** demonstrates senior-level thinking
 
 ### For AI Assistance:
-- **Context-aware** coding with .agents/ files
+- **Context-aware** coding with agents/ files
 - **Reusable prompts** in PROMPTS/ directory
 - **Consistent output** following established patterns
 - **Faster development** with clear guidelines
 
 ---
 
-## How to Use .agents/ with AI
+## How to Use agents/ with AI
 
 ### Starting a New Feature:
 
 ```
-Read .agents/ARCHITECTURE.md and .agents/STYLE_GUIDE.md, 
-then follow .agents/PROMPTS/api-endpoint.md to create 
+Read agents/ARCHITECTURE.md and agents/STYLE_GUIDE.md, 
+then follow agents/PROMPTS/api-endpoint.md to create 
 a new endpoint for [feature description].
 ```
 
 ### Code Review:
 
 ```
-Review this code against .agents/STYLE_GUIDE.md and 
-.agents/ARCHITECTURE.md. Does it follow our patterns?
+Review this code against agents/STYLE_GUIDE.md and
+agents/ARCHITECTURE.md. Does it follow our patterns?
 ```
 
 ### Testing:
 
 ```
-Follow .agents/PROMPTS/test-suite.md to create unit tests 
+Follow agents/PROMPTS/test-suite.md to create unit tests 
 for lib/rate-limiter.ts
 ```
 
@@ -309,7 +309,7 @@ for lib/rate-limiter.ts
 - **Files created:** 30+
 - **Pre-populated:** All with proper structure and comments
 
-### .agents/ Documentation
+### agents/ Documentation
 - **Total files:** 8
 - **Lines:** ~3000
 - **Covers:** Architecture, style, testing, API, components, docs
@@ -324,7 +324,7 @@ Before starting development:
 - [ ] All files are created successfully
 - [ ] OpenAPI spec validates (`npm run openapi:validate`)
 - [ ] Project structure matches plan
-- [ ] .agents/ documentation is complete
+- [ ] agents/ documentation is complete
 - [ ] Git repository is initialized
 - [ ] Dependencies are installed
 - [ ] Environment variables are set
@@ -350,8 +350,8 @@ You now have:
 ## Related
 
 If you need to:
-- Add a new feature → Use `.agents/PROMPTS/`
-- Understand architecture → Read `.agents/ARCHITECTURE.md`
-- Follow conventions → Read `.agents/STYLE_GUIDE.md`
-- Document code → Use `.agents/PROMPTS/documentation.md`
+- Add a new feature → Use `agents/PROMPTS/`
+- Understand architecture → Read `agents/ARCHITECTURE.md`
+- Follow conventions → Read `agents/STYLE_GUIDE.md`
+- Document code → Use `agents/PROMPTS/documentation.md`
 

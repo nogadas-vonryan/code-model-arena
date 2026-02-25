@@ -9,8 +9,8 @@ Use this prompt when creating tests for the Code Model Arena project.
 I need to create tests following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for testing strategy
-- Read `.agents/STYLE_GUIDE.md` for test conventions
+- Read `agents/ARCHITECTURE.md` for testing strategy
+- Read `agents/STYLE_GUIDE.md` for test conventions
 - Review the code being tested
 
 **Requirements:**
@@ -38,8 +38,8 @@ Please implement tests following our conventions from STYLE_GUIDE.md.
 I need to create unit tests following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for testing strategy
-- Read `.agents/STYLE_GUIDE.md` for test conventions
+- Read `agents/ARCHITECTURE.md` for testing strategy
+- Read `agents/STYLE_GUIDE.md` for test conventions
 - Review `lib/rate-limiter.ts`
 
 **Requirements:**
@@ -144,8 +144,8 @@ describe("RateLimiter", () => {
 I need to create E2E tests following our project conventions.
 
 **Context Files:**
-- Read `.agents/ARCHITECTURE.md` for testing strategy
-- Read `.agents/STYLE_GUIDE.md` for test conventions
+- Read `agents/ARCHITECTURE.md` for testing strategy
+- Read `agents/STYLE_GUIDE.md` for test conventions
 - Review the comparison flow
 
 **Requirements:**
