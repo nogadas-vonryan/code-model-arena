@@ -39,6 +39,7 @@ agents/
 ├── README.md           ← You are here
 ├── ARCHITECTURE.md     ← Tech stack, folder structure, patterns
 ├── STYLE_GUIDE.md      ← Code conventions, naming, formatting
+├── PLAN.md             ← High-level project plan and milestones
 └── PROMPTS/            ← Reusable prompt templates
     ├── api-endpoint.md
     ├── component.md
