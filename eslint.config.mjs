@@ -1,6 +1,7 @@
 import globals from "globals";
 import tseslint from "typescript-eslint";
 import nextPlugin from "eslint-config-next";
+import prettier from "eslint-config-prettier";
 
 export default tseslint.config(
   {
@@ -16,5 +17,6 @@ export default tseslint.config(
     },
   },
   ...nextPlugin,
-  ...tseslint.configs.recommended
+  ...tseslint.configs.recommended,
+  prettier
 );
