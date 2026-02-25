@@ -1,0 +1,553 @@
+openapi: 3.0.0
+info:
+  title: Code Model Arena API
+  version: 1.0.0
+  description: |
+    API for comparing code generation models across multiple providers.
+    Supports both live testing (open-source models via HuggingFace) and 
+    static benchmarks (closed-source models like GPT-4, Claude, Gemini).
+  contact:
+    name: API Support
+    email: support@example.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: http://localhost:3000
+    description: Local development server
+  - url: https://model-arena.vercel.app
+    description: Production server
+
+tags:
+  - name: Comparison
+    description: Model comparison endpoints
+  - name: Models
+    description: Model metadata and information
+  - name: Health
+    description: API health and status
+
+paths:
+  /api/compare:
+    post:
+      tags:
+        - Comparison
+      summary: Compare multiple models
+      description: |
+        Run a prompt against multiple models simultaneously and compare their outputs.
+        Limited to 3 models per request. Rate limited to 10 requests per 10 minutes per IP.
+      operationId: compareModels
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompareRequest'
+            examples:
+              simpleComparison:
+                summary: Simple code generation
+                value:
+                  prompt: "Write a Python function to reverse a string"
+                  modelIds:
+                    - "codellama/CodeLlama-7b-Instruct-hf"
+                    - "deepseek-ai/deepseek-coder-6.7b-instruct"
+              complexComparison:
+                summary: API endpoint generation
+                value:
+                  prompt: "Create a REST API endpoint in Express.js for user authentication with JWT"
+                  modelIds:
+                    - "codellama/CodeLlama-13b-Instruct-hf"
+                    - "bigcode/starcoder2-15b"
+                    - "mistralai/Mistral-7B-Instruct-v0.3"
+      responses:
+        '200':
+          description: Successful comparison
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompareResponse'
+              examples:
+                successfulComparison:
+                  summary: Successful model comparison
+                  value:
+                    results:
+                      - modelId: "codellama/CodeLlama-7b-Instruct-hf"
+                        modelName: "CodeLlama 7B"
+                        output: "def reverse_string(s):\n    return s[::-1]"
+                        metrics:
+                          totalTime: 3.42
+                          tokenCount: 28
+                          tokensPerSecond: 8.19
+                          timeToFirstToken: 1.21
+                        status: "success"
+                      - modelId: "deepseek-ai/deepseek-coder-6.7b-instruct"
+                        modelName: "DeepSeek Coder 6.7B"
+                        output: "def reverse_string(input_str: str) -> str:\n    return input_str[::-1]"
+                        metrics:
+                          totalTime: 4.15
+                          tokenCount: 32
+                          tokensPerSecond: 7.71
+                          timeToFirstToken: 2.03
+                        status: "success"
+                    metadata:
+                      timestamp: "2025-02-25T10:30:45Z"
+                      totalModels: 2
+                      successfulModels: 2
+                      failedModels: 0
+        '400':
+          description: Bad request - validation error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                invalidPrompt:
+                  summary: Prompt too short
+                  value:
+                    error: "Validation error"
+                    message: "Prompt must be at least 10 characters"
+                    code: "VALIDATION_ERROR"
+                tooManyModels:
+                  summary: Too many models selected
+                  value:
+                    error: "Validation error"
+                    message: "Maximum 3 models allowed per request"
+                    code: "VALIDATION_ERROR"
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RateLimitError'
+              examples:
+                rateLimitExceeded:
+                  summary: Rate limit hit
+                  value:
+                    error: "Rate limit exceeded"
+                    message: "Maximum 10 requests per 10 minutes. Please try again later."
+                    code: "RATE_LIMIT_EXCEEDED"
+                    retryAfter: 420
+                    resetTime: "2025-02-25T10:40:00Z"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '503':
+          description: Service unavailable (model unavailable or cold start timeout)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                modelUnavailable:
+                  summary: Model temporarily unavailable
+                  value:
+                    error: "Service unavailable"
+                    message: "One or more models are temporarily unavailable. Please try again."
+                    code: "MODEL_UNAVAILABLE"
+
+  /api/models:
+    get:
+      tags:
+        - Models
+      summary: Get all available models
+      description: Retrieve metadata for all models (both live and static benchmarks)
+      operationId: getModels
+      parameters:
+        - in: query
+          name: type
+          schema:
+            type: string
+            enum: [live, static, all]
+          description: Filter models by type
+          example: live
+        - in: query
+          name: specialization
+          schema:
+            type: string
+            enum: [code, general, multilingual]
+          description: Filter by model specialization
+          example: code
+      responses:
+        '200':
+          description: List of models
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelsResponse'
+              examples:
+                allModels:
+                  summary: All available models
+                  value:
+                    liveModels:
+                      - id: "codellama/CodeLlama-7b-Instruct-hf"
+                        name: "CodeLlama 7B"
+                        type: "open"
+                        size: "7B"
+                        provider: "Meta"
+                        specialization: "code"
+                        apiProvider: "huggingface"
+                        estimatedCostPer1M: 0.15
+                      - id: "deepseek-ai/deepseek-coder-6.7b-instruct"
+                        name: "DeepSeek Coder 6.7B"
+                        type: "open"
+                        size: "6.7B"
+                        provider: "DeepSeek"
+                        specialization: "code"
+                        apiProvider: "huggingface"
+                        estimatedCostPer1M: 0.12
+                    staticBenchmarks:
+                      - id: "gpt-4-turbo"
+                        name: "GPT-4 Turbo"
+                        type: "closed"
+                        provider: "OpenAI"
+                        specialization: "general"
+                        avgResponseTime: 2.8
+                        costPer1M: 10.0
+                        benchmarkedDate: "2025-01-15"
+                        source: "Manual testing"
+                      - id: "claude-3.5-sonnet"
+                        name: "Claude 3.5 Sonnet"
+                        type: "closed"
+                        provider: "Anthropic"
+                        specialization: "general"
+                        avgResponseTime: 3.1
+                        costPer1M: 15.0
+                        benchmarkedDate: "2025-01-15"
+                        source: "Manual testing"
+        '400':
+          description: Invalid query parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/models/{modelId}:
+    get:
+      tags:
+        - Models
+      summary: Get specific model details
+      description: Retrieve detailed information about a specific model
+      operationId: getModelById
+      parameters:
+        - in: path
+          name: modelId
+          required: true
+          schema:
+            type: string
+          description: Model identifier
+          example: "codellama/CodeLlama-7b-Instruct-hf"
+      responses:
+        '200':
+          description: Model details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ModelDetail'
+        '404':
+          description: Model not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/health:
+    get:
+      tags:
+        - Health
+      summary: Health check endpoint
+      description: Check API health and service status
+      operationId: healthCheck
+      responses:
+        '200':
+          description: Service is healthy
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "healthy"
+                  timestamp:
+                    type: string
+                    format: date-time
+                    example: "2025-02-25T10:30:45Z"
+                  version:
+                    type: string
+                    example: "1.0.0"
+                  uptime:
+                    type: number
+                    description: Uptime in seconds
+                    example: 3600
+
+components:
+  schemas:
+    CompareRequest:
+      type: object
+      required:
+        - prompt
+        - modelIds
+      properties:
+        prompt:
+          type: string
+          minLength: 10
+          maxLength: 2000
+          description: Code generation prompt
+          example: "Write a Python function to reverse a string"
+        modelIds:
+          type: array
+          items:
+            type: string
+          minItems: 1
+          maxItems: 3
+          description: List of model IDs to compare (max 3)
+          example:
+            - "codellama/CodeLlama-7b-Instruct-hf"
+            - "deepseek-ai/deepseek-coder-6.7b-instruct"
+
+    CompareResponse:
+      type: object
+      required:
+        - results
+        - metadata
+      properties:
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ModelResult'
+        metadata:
+          type: object
+          properties:
+            timestamp:
+              type: string
+              format: date-time
+              description: When the comparison was executed
+            totalModels:
+              type: integer
+              description: Total number of models requested
+            successfulModels:
+              type: integer
+              description: Number of models that returned successfully
+            failedModels:
+              type: integer
+              description: Number of models that failed
+
+    ModelResult:
+      type: object
+      required:
+        - modelId
+        - modelName
+        - status
+      properties:
+        modelId:
+          type: string
+          description: Unique model identifier
+          example: "codellama/CodeLlama-7b-Instruct-hf"
+        modelName:
+          type: string
+          description: Human-readable model name
+          example: "CodeLlama 7B"
+        output:
+          type: string
+          description: Generated code output (only present on success)
+          example: "def reverse_string(s):\n    return s[::-1]"
+        metrics:
+          $ref: '#/components/schemas/Metrics'
+        status:
+          type: string
+          enum: [success, error, timeout, cold_start]
+          description: Result status
+        error:
+          type: string
+          description: Error message (only present on failure)
+          example: "Model temporarily unavailable"
+
+    Metrics:
+      type: object
+      required:
+        - totalTime
+        - tokenCount
+        - tokensPerSecond
+      properties:
+        totalTime:
+          type: number
+          format: float
+          minimum: 0
+          description: Total time taken in seconds
+          example: 3.42
+        tokenCount:
+          type: integer
+          minimum: 0
+          description: Number of tokens generated
+          example: 28
+        tokensPerSecond:
+          type: number
+          format: float
+          minimum: 0
+          description: Generation speed (tokens/sec)
+          example: 8.19
+        timeToFirstToken:
+          type: number
+          format: float
+          minimum: 0
+          description: Time to first token in seconds (cold start indicator)
+          example: 1.21
+
+    ModelDetail:
+      oneOf:
+        - $ref: '#/components/schemas/LiveModel'
+        - $ref: '#/components/schemas/StaticBenchmark'
+
+    LiveModel:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - provider
+        - apiProvider
+      properties:
+        id:
+          type: string
+          example: "codellama/CodeLlama-7b-Instruct-hf"
+        name:
+          type: string
+          example: "CodeLlama 7B"
+        type:
+          type: string
+          enum: [open]
+          example: "open"
+        size:
+          type: string
+          description: Model parameter size
+          example: "7B"
+        provider:
+          type: string
+          example: "Meta"
+        specialization:
+          type: string
+          enum: [code, general, multilingual]
+          example: "code"
+        apiProvider:
+          type: string
+          enum: [huggingface]
+          example: "huggingface"
+        estimatedCostPer1M:
+          type: number
+          format: float
+          description: Estimated cost per 1M tokens (USD)
+          example: 0.15
+        description:
+          type: string
+          example: "Code-specialized LLaMA model fine-tuned for code generation"
+
+    StaticBenchmark:
+      type: object
+      required:
+        - id
+        - name
+        - type
+        - provider
+        - avgResponseTime
+        - costPer1M
+        - benchmarkedDate
+      properties:
+        id:
+          type: string
+          example: "gpt-4-turbo"
+        name:
+          type: string
+          example: "GPT-4 Turbo"
+        type:
+          type: string
+          enum: [closed]
+          example: "closed"
+        provider:
+          type: string
+          example: "OpenAI"
+        specialization:
+          type: string
+          enum: [code, general, multilingual]
+          example: "general"
+        avgResponseTime:
+          type: number
+          format: float
+          description: Average response time in seconds
+          example: 2.8
+        costPer1M:
+          type: number
+          format: float
+          description: Cost per 1M tokens (USD)
+          example: 10.0
+        benchmarkedDate:
+          type: string
+          format: date
+          description: When the benchmark was last run
+          example: "2025-01-15"
+        source:
+          type: string
+          description: Source of benchmark data
+          example: "Manual testing"
+
+    ModelsResponse:
+      type: object
+      properties:
+        liveModels:
+          type: array
+          items:
+            $ref: '#/components/schemas/LiveModel'
+        staticBenchmarks:
+          type: array
+          items:
+            $ref: '#/components/schemas/StaticBenchmark'
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+        - code
+      properties:
+        error:
+          type: string
+          description: Error type
+          example: "Validation error"
+        message:
+          type: string
+          description: Human-readable error message
+          example: "Prompt must be at least 10 characters"
+        code:
+          type: string
+          description: Machine-readable error code
+          example: "VALIDATION_ERROR"
+        details:
+          type: object
+          description: Additional error details
+          additionalProperties: true
+
+    RateLimitError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+        - type: object
+          properties:
+            retryAfter:
+              type: integer
+              description: Seconds until rate limit resets
+              example: 420
+            resetTime:
+              type: string
+              format: date-time
+              description: When the rate limit will reset
+              example: "2025-02-25T10:40:00Z"
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key for authentication (future use)
+
+security: []
