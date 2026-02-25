@@ -1,11 +1,13 @@
 openapi: 3.0.0
 info:
   title: Code Model Arena API
-  version: 1.0.0
+  version: 0.1.0
   description: |
-    API for comparing code generation models across multiple providers.
+    API v1 for comparing code generation models across multiple providers.
     Supports both live testing (open-source models via HuggingFace) and 
     static benchmarks (closed-source models like GPT-4, Claude, Gemini).
+    
+    Base URL: /api/v1
   contact:
     name: API Support
     email: support@example.com
@@ -28,7 +30,7 @@ tags:
     description: API health and status
 
 paths:
-  /api/compare:
+  /api/v1/compare:
     post:
       tags:
         - Comparison
@@ -148,7 +150,7 @@ paths:
                     message: "One or more models are temporarily unavailable. Please try again."
                     code: "MODEL_UNAVAILABLE"
 
-  /api/models:
+  /api/v1/models:
     get:
       tags:
         - Models
@@ -224,7 +226,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /api/models/{modelId}:
+  /api/v1/models/{modelId}:
     get:
       tags:
         - Models
@@ -253,7 +255,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /api/health:
+  /api/v1/health:
     get:
       tags:
         - Health
@@ -282,6 +284,42 @@ paths:
                     type: number
                     description: Uptime in seconds
                     example: 3600
+
+  /api/versions:
+    get:
+      tags:
+        - Health
+      summary: List supported API versions
+      description: Returns supported API versions and deprecation notices
+      operationId: getApiVersions
+      responses:
+        '200':
+          description: List of supported versions
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  current:
+                    type: string
+                    example: "v1"
+                  supported:
+                    type: array
+                    items:
+                      type: string
+                    example: ["v1"]
+                  deprecations:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        version:
+                          type: string
+                        sunsetDate:
+                          type: string
+                          format: date
+                        notice:
+                          type: string
 
 components:
   schemas:
