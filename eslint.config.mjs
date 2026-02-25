@@ -1,14 +1,14 @@
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import nextPlugin from "eslint-config-next";
-import prettier from "eslint-config-prettier";
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import nextPlugin from 'eslint-config-next';
+import prettier from 'eslint-config-prettier';
 
 export default tseslint.config(
   {
-    ignores: [".next/", "node_modules/"],
+    ignores: ['.next/', 'node_modules/'],
   },
   {
-    files: ["**/*.{ts,tsx}"],
+    files: ['**/*.{ts,tsx}'],
     languageOptions: {
       globals: {
         ...globals.browser,

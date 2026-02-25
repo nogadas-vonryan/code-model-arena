@@ -1,6 +1,7 @@
 # Documentation Creation Prompt
 
 ## Context
+
 Use this prompt when creating or updating documentation for the Code Model Arena project.
 
 ## Prompt Template
@@ -73,7 +74,7 @@ Please write documentation that showcases the project professionally.
 
 ## README Template
 
-```markdown
+````markdown
 # Code Model Arena
 
 > Compare code generation models side-by-side with live testing and benchmarks
@@ -99,46 +100,54 @@ Please write documentation that showcases the project professionally.
 ## Tech Stack
 
 **Frontend:**
+
 - [Next.js 14](https://nextjs.org/) - React framework with App Router
 - [TypeScript](https://www.typescriptlang.org/) - Type safety
 - [Tailwind CSS](https://tailwindcss.com/) - Styling
 - [Recharts](https://recharts.org/) - Data visualization
 
 **Backend:**
+
 - Next.js API Routes - Serverless functions
 - [Zod](https://zod.dev/) - Runtime validation
 - HuggingFace Inference API - Model access
 
 **Code Quality:**
+
 - ESLint + Prettier - Code formatting
 - Husky + lint-staged - Git hooks
 - OpenAPI 3.0 - API documentation
 
 ## Prerequisites
 
-- Node.js 18+ 
+- Node.js 18+
 - npm or yarn
 - HuggingFace account (free tier)
 
 ## Installation
 
 1. **Clone the repository**
+
 ```bash
 git clone https://github.com/yourusername/model-arena.git
 cd model-arena
 ```
+````
 
 2. **Install dependencies**
+
 ```bash
 npm install
 ```
 
 3. **Set up environment variables**
+
 ```bash
 cp .env.example .env.local
 ```
 
 Edit `.env.local`:
+
 ```env
 HUGGINGFACE_API_KEY=your_hf_api_key_here
 ```
@@ -146,6 +155,7 @@ HUGGINGFACE_API_KEY=your_hf_api_key_here
 Get your HuggingFace API key from [https://huggingface.co/settings/tokens](https://huggingface.co/settings/tokens)
 
 4. **Run development server**
+
 ```bash
 npm run dev
 ```
@@ -202,6 +212,7 @@ model-arena/
 ## API Documentation
 
 API documentation is available in OpenAPI 3.0 format:
+
 - View: `openapi/spec.yaml`
 - Validate: `npm run openapi:validate`
 
@@ -286,19 +297,19 @@ Please write clear, concise JSDoc comments.
 
 ## JSDoc Template
 
-```typescript
+````typescript
 /**
  * Query a HuggingFace model with the given prompt
- * 
+ *
  * Handles cold starts by retrying once with a 60-second timeout.
  * Returns normalized metrics including tokens/sec calculation.
- * 
+ *
  * @param options - Query configuration
  * @param options.modelId - HuggingFace model identifier (e.g., "codellama/CodeLlama-7b-Instruct-hf")
  * @param options.prompt - Code generation prompt (10-2000 characters)
  * @param options.maxTokens - Maximum tokens to generate (default: 256)
  * @param options.temperature - Sampling temperature (default: 0.7)
- * 
+ *
  * @returns Model output and performance metrics
  * @returns {string} output - Generated code
  * @returns {object} metrics - Performance measurements
@@ -306,11 +317,11 @@ Please write clear, concise JSDoc comments.
  * @returns {number} metrics.tokenCount - Number of tokens generated
  * @returns {number} metrics.tokensPerSecond - Generation speed
  * @returns {number} metrics.timeToFirstToken - Time to first token (cold start indicator)
- * 
+ *
  * @throws {Error} If model is unavailable after retry
  * @throws {Error} If request times out (>60s)
  * @throws {Error} If HuggingFace API returns an error
- * 
+ *
  * @example
  * ```typescript
  * const result = await queryModel({
@@ -324,7 +335,7 @@ Please write clear, concise JSDoc comments.
 export async function queryModel(options: HFQueryOptions): Promise<HFResponse> {
   // Implementation
 }
-```
+````
 
 ## OpenAPI Documentation Example
 
@@ -375,6 +386,7 @@ After AI generates documentation, verify:
 ### Writing Style
 
 **DO:**
+
 - Use active voice
 - Write in present tense
 - Be concise and direct
@@ -382,6 +394,7 @@ After AI generates documentation, verify:
 - Explain "why" not just "what"
 
 **DON'T:**
+
 - Use jargon without explanation
 - Assume prior knowledge
 - Write walls of text
@@ -401,8 +414,8 @@ After AI generates documentation, verify:
 ```typescript
 // Good - Clear, runnable, with comments
 const result = await queryModel({
-  modelId: "codellama/CodeLlama-7b-Instruct-hf",
-  prompt: "Write a Python function",
+  modelId: 'codellama/CodeLlama-7b-Instruct-hf',
+  prompt: 'Write a Python function',
 });
 // Returns: { output: "def...", metrics: {...} }
 

@@ -1,6 +1,7 @@
 # React Component Creation Prompt
 
 ## Context
+
 Use this prompt when creating new React components in the Code Model Arena project.
 
 ## Prompt Template
@@ -125,7 +126,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * ComponentName - Brief description
- * 
+ *
  * @example
  * <ComponentName prop1="value" onAction={handleAction} />
  */
@@ -143,33 +144,33 @@ export default function ComponentName({
 }: ComponentNameProps) {
   // 1. Hooks
   const [localState, setLocalState] = useState(initialValue);
-  
+
   // 2. Derived state / Memoized values
   const computedValue = useMemo(() => {
     return expensiveCalculation(prop1);
   }, [prop1]);
-  
+
   // 3. Effects
   useEffect(() => {
     // Side effects
   }, [dependency]);
-  
+
   // 4. Event handlers
   const handleClick = () => {
     setLocalState(newValue);
     onAction?.();
   };
-  
+
   // 5. Render helpers (optional)
   const renderSection = () => {
     return <div>Section content</div>;
   };
-  
+
   // 6. Early returns (loading/error states)
   if (prop2 === 0) {
     return <div>Empty state</div>;
   }
-  
+
   // 7. Main render
   return (
     <div className="...">
@@ -197,6 +198,7 @@ After AI generates the component, verify:
 ## Common Pitfalls to Avoid
 
 **Don't:**
+
 - Use `any` types for props
 - Call hooks conditionally
 - Forget "use client" when using hooks
@@ -206,6 +208,7 @@ After AI generates the component, verify:
 - Pass entire objects as props unnecessarily
 
 **Do:**
+
 - Use TypeScript interfaces
 - Destructure props in signature
 - Add JSDoc comments

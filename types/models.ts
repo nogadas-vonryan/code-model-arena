@@ -1,10 +1,10 @@
-export type ModelType = "live" | "static";
+export type ModelType = 'live' | 'static';
 
 export interface LiveModel {
   id: string;
   name: string;
-  type: "live";
-  provider: "huggingface";
+  type: 'live';
+  provider: 'huggingface';
   modelId: string;
   description: string;
   contextWindow: number;
@@ -14,14 +14,14 @@ export interface LiveModel {
 export interface StaticBenchmark {
   id: string;
   name: string;
-  type: "static";
+  type: 'static';
   provider: string;
   benchmarkUrl?: string;
   description: string;
   benchmarks: {
     humanEval?: number;
     mbpp?: number;
-    "multipl-e"?: number;
+    'multipl-e'?: number;
     apps?: number;
     gsm8k?: number;
   };
@@ -43,5 +43,5 @@ export interface ModelResult {
   output: string;
   metrics: ModelMetrics;
   error?: string;
-  status: "success" | "error" | "loading";
+  status: 'success' | 'error' | 'loading';
 }

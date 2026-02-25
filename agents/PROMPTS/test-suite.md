@@ -1,6 +1,7 @@
 # Test Suite Creation Prompt
 
 ## Context
+
 Use this prompt when creating tests for the Code Model Arena project.
 
 ## Prompt Template
@@ -74,64 +75,64 @@ Please implement tests following our conventions from STYLE_GUIDE.md.
 ## Unit Test Template
 
 ```typescript
-import { describe, it, expect, beforeEach, vi } from "vitest";
-import { RateLimiter } from "@/lib/rate-limiter";
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { RateLimiter } from '@/lib/rate-limiter';
 
-describe("RateLimiter", () => {
+describe('RateLimiter', () => {
   let rateLimiter: RateLimiter;
-  
+
   beforeEach(() => {
     rateLimiter = new RateLimiter(10, 600000); // 10 req per 10min
     vi.clearAllMocks();
   });
-  
-  describe("check", () => {
-    it("should allow first request", () => {
-      const result = rateLimiter.check("user1");
-      
+
+  describe('check', () => {
+    it('should allow first request', () => {
+      const result = rateLimiter.check('user1');
+
       expect(result.allowed).toBe(true);
       expect(result.remaining).toBe(9);
     });
-    
-    it("should block requests over limit", () => {
+
+    it('should block requests over limit', () => {
       // Make 10 requests
       for (let i = 0; i < 10; i++) {
-        rateLimiter.check("user1");
+        rateLimiter.check('user1');
       }
-      
+
       // 11th request should be blocked
-      const result = rateLimiter.check("user1");
-      
+      const result = rateLimiter.check('user1');
+
       expect(result.allowed).toBe(false);
       expect(result.remaining).toBe(0);
     });
-    
-    it("should reset after time window", () => {
+
+    it('should reset after time window', () => {
       vi.useFakeTimers();
-      
+
       // Make 10 requests
       for (let i = 0; i < 10; i++) {
-        rateLimiter.check("user1");
+        rateLimiter.check('user1');
       }
-      
+
       // Advance time past window
       vi.advanceTimersByTime(601000); // 10min + 1s
-      
+
       // Should allow new request
-      const result = rateLimiter.check("user1");
+      const result = rateLimiter.check('user1');
       expect(result.allowed).toBe(true);
-      
+
       vi.useRealTimers();
     });
-    
-    it("should handle multiple identifiers independently", () => {
+
+    it('should handle multiple identifiers independently', () => {
       // Max out user1
       for (let i = 0; i < 10; i++) {
-        rateLimiter.check("user1");
+        rateLimiter.check('user1');
       }
-      
+
       // user2 should still be allowed
-      const result = rateLimiter.check("user2");
+      const result = rateLimiter.check('user2');
       expect(result.allowed).toBe(true);
     });
   });
@@ -182,80 +183,92 @@ Please implement tests following our conventions from STYLE_GUIDE.md.
 ## E2E Test Template
 
 ```typescript
-import { test, expect } from "@playwright/test";
+import { test, expect } from '@playwright/test';
 
-test.describe("Model Comparison Flow", () => {
+test.describe('Model Comparison Flow', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/");
+    await page.goto('/');
   });
-  
-  test("should display comparison form", async ({ page }) => {
-    await expect(page.getByRole("heading", { name: /code model arena/i })).toBeVisible();
-    await expect(page.getByPlaceholder(/enter your code prompt/i)).toBeVisible();
-    await expect(page.getByRole("button", { name: /compare models/i })).toBeVisible();
+
+  test('should display comparison form', async ({ page }) => {
+    await expect(
+      page.getByRole('heading', { name: /code model arena/i })
+    ).toBeVisible();
+    await expect(
+      page.getByPlaceholder(/enter your code prompt/i)
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /compare models/i })
+    ).toBeVisible();
   });
-  
-  test("should validate prompt length", async ({ page }) => {
+
+  test('should validate prompt length', async ({ page }) => {
     const promptInput = page.getByPlaceholder(/enter your code prompt/i);
-    const submitButton = page.getByRole("button", { name: /compare models/i });
-    
+    const submitButton = page.getByRole('button', { name: /compare models/i });
+
     // Enter short prompt (< 10 chars)
-    await promptInput.fill("short");
+    await promptInput.fill('short');
     await submitButton.click();
-    
+
     // Should show validation error
     await expect(page.getByText(/at least 10 characters/i)).toBeVisible();
   });
-  
-  test("should limit model selection to 3", async ({ page }) => {
+
+  test('should limit model selection to 3', async ({ page }) => {
     // Select 3 models
-    await page.getByLabel("CodeLlama 7B").check();
-    await page.getByLabel("DeepSeek Coder 6.7B").check();
-    await page.getByLabel("StarCoder2 15B").check();
-    
+    await page.getByLabel('CodeLlama 7B').check();
+    await page.getByLabel('DeepSeek Coder 6.7B').check();
+    await page.getByLabel('StarCoder2 15B').check();
+
     // 4th checkbox should be disabled
-    await expect(page.getByLabel("Mistral 7B")).toBeDisabled();
+    await expect(page.getByLabel('Mistral 7B')).toBeDisabled();
   });
-  
-  test("should submit and display results", async ({ page }) => {
+
+  test('should submit and display results', async ({ page }) => {
     // Fill form
-    await page.getByPlaceholder(/enter your code prompt/i).fill(
-      "Write a Python function to reverse a string"
-    );
-    await page.getByLabel("CodeLlama 7B").check();
-    await page.getByLabel("DeepSeek Coder 6.7B").check();
-    
+    await page
+      .getByPlaceholder(/enter your code prompt/i)
+      .fill('Write a Python function to reverse a string');
+    await page.getByLabel('CodeLlama 7B').check();
+    await page.getByLabel('DeepSeek Coder 6.7B').check();
+
     // Submit
-    await page.getByRole("button", { name: /compare models/i }).click();
-    
+    await page.getByRole('button', { name: /compare models/i }).click();
+
     // Should show loading state
     await expect(page.getByText(/generating/i)).toBeVisible();
-    
+
     // Should display results (wait for API response)
-    await expect(page.getByText(/def reverse_string/i)).toBeVisible({ timeout: 10000 });
-    
+    await expect(page.getByText(/def reverse_string/i)).toBeVisible({
+      timeout: 10000,
+    });
+
     // Should display metrics
     await expect(page.getByText(/tokens per second/i)).toBeVisible();
   });
-  
-  test("should work on mobile viewport", async ({ page }) => {
+
+  test('should work on mobile viewport', async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 667 });
-    
+
     // Form should be visible and usable
-    await expect(page.getByPlaceholder(/enter your code prompt/i)).toBeVisible();
-    await expect(page.getByRole("button", { name: /compare models/i })).toBeVisible();
-    
+    await expect(
+      page.getByPlaceholder(/enter your code prompt/i)
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: /compare models/i })
+    ).toBeVisible();
+
     // Results should stack vertically
-    await page.getByPlaceholder(/enter your code prompt/i).fill(
-      "Write a Python function to reverse a string"
-    );
-    await page.getByLabel("CodeLlama 7B").check();
-    await page.getByRole("button", { name: /compare models/i }).click();
-    
+    await page
+      .getByPlaceholder(/enter your code prompt/i)
+      .fill('Write a Python function to reverse a string');
+    await page.getByLabel('CodeLlama 7B').check();
+    await page.getByRole('button', { name: /compare models/i }).click();
+
     // Check responsive layout (results should not overflow)
     const results = page.locator('[data-testid="result-card"]');
     await results.first().waitFor();
-    
+
     const boundingBox = await results.first().boundingBox();
     expect(boundingBox?.width).toBeLessThanOrEqual(375);
   });
@@ -282,7 +295,7 @@ After AI generates tests, verify:
 ### Testing Async Functions
 
 ```typescript
-it("should handle async operation", async () => {
+it('should handle async operation', async () => {
   const result = await asyncFunction();
   expect(result).toBe(expectedValue);
 });
@@ -291,15 +304,15 @@ it("should handle async operation", async () => {
 ### Testing Error Handling
 
 ```typescript
-it("should throw error on invalid input", () => {
+it('should throw error on invalid input', () => {
   expect(() => {
     functionThatThrows();
-  }).toThrow("Expected error message");
+  }).toThrow('Expected error message');
 });
 
 // For async
-it("should reject promise on error", async () => {
-  await expect(asyncFunctionThatRejects()).rejects.toThrow("Error message");
+it('should reject promise on error', async () => {
+  await expect(asyncFunctionThatRejects()).rejects.toThrow('Error message');
 });
 ```
 
@@ -311,9 +324,9 @@ import { render, screen, fireEvent } from "@testing-library/react";
 it("should handle button click", () => {
   const handleClick = vi.fn();
   render(<Button onClick={handleClick}>Click me</Button>);
-  
+
   fireEvent.click(screen.getByText("Click me"));
-  
+
   expect(handleClick).toHaveBeenCalledTimes(1);
 });
 ```
@@ -321,11 +334,11 @@ it("should handle button click", () => {
 ### Mocking API Calls
 
 ```typescript
-import { vi } from "vitest";
+import { vi } from 'vitest';
 
-vi.mock("@/lib/huggingface", () => ({
+vi.mock('@/lib/huggingface', () => ({
   queryModel: vi.fn().mockResolvedValue({
-    output: "mocked output",
+    output: 'mocked output',
     metrics: { totalTime: 1.5, tokenCount: 10, tokensPerSecond: 6.67 },
   }),
 }));

@@ -1,5 +1,5 @@
-import { Model, ModelType } from "@/types/models";
-import modelsData from "@/data/models.json";
+import { Model, ModelType } from '@/types/models';
+import modelsData from '@/data/models.json';
 
 const models: Model[] = modelsData as Model[];
 
@@ -29,14 +29,17 @@ export function filterModels(options: {
 }
 
 export function getLiveModels(): Model[] {
-  return models.filter((m) => m.type === "live");
+  return models.filter((m) => m.type === 'live');
 }
 
 export function getStaticModels(): Model[] {
-  return models.filter((m) => m.type === "static");
+  return models.filter((m) => m.type === 'static');
 }
 
-export function validateModelIds(ids: string[]): { valid: string[]; invalid: string[] } {
+export function validateModelIds(ids: string[]): {
+  valid: string[];
+  invalid: string[];
+} {
   const valid: string[] = [];
   const invalid: string[] = [];
 

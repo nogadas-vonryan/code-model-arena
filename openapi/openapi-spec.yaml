@@ -6,7 +6,7 @@ info:
     API v1 for comparing code generation models across multiple providers.
     Supports both live testing (open-source models via HuggingFace) and 
     static benchmarks (closed-source models like GPT-4, Claude, Gemini).
-    
+
     Base URL: /api/v1
   contact:
     name: API Support
@@ -49,18 +49,18 @@ paths:
               simpleComparison:
                 summary: Simple code generation
                 value:
-                  prompt: "Write a Python function to reverse a string"
+                  prompt: 'Write a Python function to reverse a string'
                   modelIds:
-                    - "codellama/CodeLlama-7b-Instruct-hf"
-                    - "deepseek-ai/deepseek-coder-6.7b-instruct"
+                    - 'codellama/CodeLlama-7b-Instruct-hf'
+                    - 'deepseek-ai/deepseek-coder-6.7b-instruct'
               complexComparison:
                 summary: API endpoint generation
                 value:
-                  prompt: "Create a REST API endpoint in Express.js for user authentication with JWT"
+                  prompt: 'Create a REST API endpoint in Express.js for user authentication with JWT'
                   modelIds:
-                    - "codellama/CodeLlama-13b-Instruct-hf"
-                    - "bigcode/starcoder2-15b"
-                    - "mistralai/Mistral-7B-Instruct-v0.3"
+                    - 'codellama/CodeLlama-13b-Instruct-hf'
+                    - 'bigcode/starcoder2-15b'
+                    - 'mistralai/Mistral-7B-Instruct-v0.3'
       responses:
         '200':
           description: Successful comparison
@@ -73,26 +73,26 @@ paths:
                   summary: Successful model comparison
                   value:
                     results:
-                      - modelId: "codellama/CodeLlama-7b-Instruct-hf"
-                        modelName: "CodeLlama 7B"
+                      - modelId: 'codellama/CodeLlama-7b-Instruct-hf'
+                        modelName: 'CodeLlama 7B'
                         output: "def reverse_string(s):\n    return s[::-1]"
                         metrics:
                           totalTime: 3.42
                           tokenCount: 28
                           tokensPerSecond: 8.19
                           timeToFirstToken: 1.21
-                        status: "success"
-                      - modelId: "deepseek-ai/deepseek-coder-6.7b-instruct"
-                        modelName: "DeepSeek Coder 6.7B"
+                        status: 'success'
+                      - modelId: 'deepseek-ai/deepseek-coder-6.7b-instruct'
+                        modelName: 'DeepSeek Coder 6.7B'
                         output: "def reverse_string(input_str: str) -> str:\n    return input_str[::-1]"
                         metrics:
                           totalTime: 4.15
                           tokenCount: 32
                           tokensPerSecond: 7.71
                           timeToFirstToken: 2.03
-                        status: "success"
+                        status: 'success'
                     metadata:
-                      timestamp: "2025-02-25T10:30:45Z"
+                      timestamp: '2025-02-25T10:30:45Z'
                       totalModels: 2
                       successfulModels: 2
                       failedModels: 0
@@ -106,15 +106,15 @@ paths:
                 invalidPrompt:
                   summary: Prompt too short
                   value:
-                    error: "Validation error"
-                    message: "Prompt must be at least 10 characters"
-                    code: "VALIDATION_ERROR"
+                    error: 'Validation error'
+                    message: 'Prompt must be at least 10 characters'
+                    code: 'VALIDATION_ERROR'
                 tooManyModels:
                   summary: Too many models selected
                   value:
-                    error: "Validation error"
-                    message: "Maximum 3 models allowed per request"
-                    code: "VALIDATION_ERROR"
+                    error: 'Validation error'
+                    message: 'Maximum 3 models allowed per request'
+                    code: 'VALIDATION_ERROR'
         '429':
           description: Rate limit exceeded
           content:
@@ -125,11 +125,11 @@ paths:
                 rateLimitExceeded:
                   summary: Rate limit hit
                   value:
-                    error: "Rate limit exceeded"
-                    message: "Maximum 10 requests per 10 minutes. Please try again later."
-                    code: "RATE_LIMIT_EXCEEDED"
+                    error: 'Rate limit exceeded'
+                    message: 'Maximum 10 requests per 10 minutes. Please try again later.'
+                    code: 'RATE_LIMIT_EXCEEDED'
                     retryAfter: 420
-                    resetTime: "2025-02-25T10:40:00Z"
+                    resetTime: '2025-02-25T10:40:00Z'
         '500':
           description: Internal server error
           content:
@@ -146,9 +146,9 @@ paths:
                 modelUnavailable:
                   summary: Model temporarily unavailable
                   value:
-                    error: "Service unavailable"
-                    message: "One or more models are temporarily unavailable. Please try again."
-                    code: "MODEL_UNAVAILABLE"
+                    error: 'Service unavailable'
+                    message: 'One or more models are temporarily unavailable. Please try again.'
+                    code: 'MODEL_UNAVAILABLE'
 
   /api/v1/models:
     get:
@@ -184,41 +184,41 @@ paths:
                   summary: All available models
                   value:
                     liveModels:
-                      - id: "codellama/CodeLlama-7b-Instruct-hf"
-                        name: "CodeLlama 7B"
-                        type: "open"
-                        size: "7B"
-                        provider: "Meta"
-                        specialization: "code"
-                        apiProvider: "huggingface"
+                      - id: 'codellama/CodeLlama-7b-Instruct-hf'
+                        name: 'CodeLlama 7B'
+                        type: 'open'
+                        size: '7B'
+                        provider: 'Meta'
+                        specialization: 'code'
+                        apiProvider: 'huggingface'
                         estimatedCostPer1M: 0.15
-                      - id: "deepseek-ai/deepseek-coder-6.7b-instruct"
-                        name: "DeepSeek Coder 6.7B"
-                        type: "open"
-                        size: "6.7B"
-                        provider: "DeepSeek"
-                        specialization: "code"
-                        apiProvider: "huggingface"
+                      - id: 'deepseek-ai/deepseek-coder-6.7b-instruct'
+                        name: 'DeepSeek Coder 6.7B'
+                        type: 'open'
+                        size: '6.7B'
+                        provider: 'DeepSeek'
+                        specialization: 'code'
+                        apiProvider: 'huggingface'
                         estimatedCostPer1M: 0.12
                     staticBenchmarks:
-                      - id: "gpt-4-turbo"
-                        name: "GPT-4 Turbo"
-                        type: "closed"
-                        provider: "OpenAI"
-                        specialization: "general"
+                      - id: 'gpt-4-turbo'
+                        name: 'GPT-4 Turbo'
+                        type: 'closed'
+                        provider: 'OpenAI'
+                        specialization: 'general'
                         avgResponseTime: 2.8
                         costPer1M: 10.0
-                        benchmarkedDate: "2025-01-15"
-                        source: "Manual testing"
-                      - id: "claude-3.5-sonnet"
-                        name: "Claude 3.5 Sonnet"
-                        type: "closed"
-                        provider: "Anthropic"
-                        specialization: "general"
+                        benchmarkedDate: '2025-01-15'
+                        source: 'Manual testing'
+                      - id: 'claude-3.5-sonnet'
+                        name: 'Claude 3.5 Sonnet'
+                        type: 'closed'
+                        provider: 'Anthropic'
+                        specialization: 'general'
                         avgResponseTime: 3.1
                         costPer1M: 15.0
-                        benchmarkedDate: "2025-01-15"
-                        source: "Manual testing"
+                        benchmarkedDate: '2025-01-15'
+                        source: 'Manual testing'
         '400':
           description: Invalid query parameters
           content:
@@ -240,7 +240,7 @@ paths:
           schema:
             type: string
           description: Model identifier
-          example: "codellama/CodeLlama-7b-Instruct-hf"
+          example: 'codellama/CodeLlama-7b-Instruct-hf'
       responses:
         '200':
           description: Model details
@@ -272,14 +272,14 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: "healthy"
+                    example: 'healthy'
                   timestamp:
                     type: string
                     format: date-time
-                    example: "2025-02-25T10:30:45Z"
+                    example: '2025-02-25T10:30:45Z'
                   version:
                     type: string
-                    example: "1.0.0"
+                    example: '1.0.0'
                   uptime:
                     type: number
                     description: Uptime in seconds
@@ -302,12 +302,12 @@ paths:
                 properties:
                   current:
                     type: string
-                    example: "v1"
+                    example: 'v1'
                   supported:
                     type: array
                     items:
                       type: string
-                    example: ["v1"]
+                    example: ['v1']
                   deprecations:
                     type: array
                     items:
@@ -334,7 +334,7 @@ components:
           minLength: 10
           maxLength: 2000
           description: Code generation prompt
-          example: "Write a Python function to reverse a string"
+          example: 'Write a Python function to reverse a string'
         modelIds:
           type: array
           items:
@@ -343,8 +343,8 @@ components:
           maxItems: 3
           description: List of model IDs to compare (max 3)
           example:
-            - "codellama/CodeLlama-7b-Instruct-hf"
-            - "deepseek-ai/deepseek-coder-6.7b-instruct"
+            - 'codellama/CodeLlama-7b-Instruct-hf'
+            - 'deepseek-ai/deepseek-coder-6.7b-instruct'
 
     CompareResponse:
       type: object
@@ -383,11 +383,11 @@ components:
         modelId:
           type: string
           description: Unique model identifier
-          example: "codellama/CodeLlama-7b-Instruct-hf"
+          example: 'codellama/CodeLlama-7b-Instruct-hf'
         modelName:
           type: string
           description: Human-readable model name
-          example: "CodeLlama 7B"
+          example: 'CodeLlama 7B'
         output:
           type: string
           description: Generated code output (only present on success)
@@ -401,7 +401,7 @@ components:
         error:
           type: string
           description: Error message (only present on failure)
-          example: "Model temporarily unavailable"
+          example: 'Model temporarily unavailable'
 
     Metrics:
       type: object
@@ -450,29 +450,29 @@ components:
       properties:
         id:
           type: string
-          example: "codellama/CodeLlama-7b-Instruct-hf"
+          example: 'codellama/CodeLlama-7b-Instruct-hf'
         name:
           type: string
-          example: "CodeLlama 7B"
+          example: 'CodeLlama 7B'
         type:
           type: string
           enum: [open]
-          example: "open"
+          example: 'open'
         size:
           type: string
           description: Model parameter size
-          example: "7B"
+          example: '7B'
         provider:
           type: string
-          example: "Meta"
+          example: 'Meta'
         specialization:
           type: string
           enum: [code, general, multilingual]
-          example: "code"
+          example: 'code'
         apiProvider:
           type: string
           enum: [huggingface]
-          example: "huggingface"
+          example: 'huggingface'
         estimatedCostPer1M:
           type: number
           format: float
@@ -480,7 +480,7 @@ components:
           example: 0.15
         description:
           type: string
-          example: "Code-specialized LLaMA model fine-tuned for code generation"
+          example: 'Code-specialized LLaMA model fine-tuned for code generation'
 
     StaticBenchmark:
       type: object
@@ -495,21 +495,21 @@ components:
       properties:
         id:
           type: string
-          example: "gpt-4-turbo"
+          example: 'gpt-4-turbo'
         name:
           type: string
-          example: "GPT-4 Turbo"
+          example: 'GPT-4 Turbo'
         type:
           type: string
           enum: [closed]
-          example: "closed"
+          example: 'closed'
         provider:
           type: string
-          example: "OpenAI"
+          example: 'OpenAI'
         specialization:
           type: string
           enum: [code, general, multilingual]
-          example: "general"
+          example: 'general'
         avgResponseTime:
           type: number
           format: float
@@ -524,11 +524,11 @@ components:
           type: string
           format: date
           description: When the benchmark was last run
-          example: "2025-01-15"
+          example: '2025-01-15'
         source:
           type: string
           description: Source of benchmark data
-          example: "Manual testing"
+          example: 'Manual testing'
 
     ModelsResponse:
       type: object
@@ -552,15 +552,15 @@ components:
         error:
           type: string
           description: Error type
-          example: "Validation error"
+          example: 'Validation error'
         message:
           type: string
           description: Human-readable error message
-          example: "Prompt must be at least 10 characters"
+          example: 'Prompt must be at least 10 characters'
         code:
           type: string
           description: Machine-readable error code
-          example: "VALIDATION_ERROR"
+          example: 'VALIDATION_ERROR'
         details:
           type: object
           description: Additional error details
@@ -579,7 +579,7 @@ components:
               type: string
               format: date-time
               description: When the rate limit will reset
-              example: "2025-02-25T10:40:00Z"
+              example: '2025-02-25T10:40:00Z'
 
   securitySchemes:
     ApiKeyAuth:

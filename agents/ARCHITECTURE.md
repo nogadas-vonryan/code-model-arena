@@ -7,6 +7,7 @@ Code Model Arena is a Next.js 14 application that compares code generation model
 ## Tech Stack
 
 ### Frontend
+
 - **Framework:** Next.js 14 (App Router)
 - **Language:** TypeScript 5+ (strict mode)
 - **Styling:** Tailwind CSS 3+
@@ -15,12 +16,14 @@ Code Model Arena is a Next.js 14 application that compares code generation model
 - **UI Libraries:** clsx, tailwind-merge
 
 ### Backend
+
 - **Runtime:** Next.js API Routes (serverless)
 - **Validation:** Zod 3+ (runtime + compile-time types)
 - **External APIs:** HuggingFace Inference API
 - **Rate Limiting:** In-memory Map-based (MVP), Redis/Upstash (future)
 
 ### Code Quality
+
 - **Linting:** ESLint (Next.js config + Prettier)
 - **Formatting:** Prettier 3+
 - **Git Hooks:** Husky + lint-staged
@@ -28,6 +31,7 @@ Code Model Arena is a Next.js 14 application that compares code generation model
 - **API Contract:** OpenAPI 3.0
 
 ### Testing (Phase 3+)
+
 - **Unit Tests:** Vitest
 - **E2E Tests:** Playwright
 - **Coverage:** 80%+ target
@@ -136,59 +140,58 @@ Return JSON
 
 ```typescript
 // app/api/[endpoint]/route.ts
-import { NextRequest, NextResponse } from "next/server";
-import { ValidationSchema } from "@/lib/validations";
-import { checkRateLimit } from "@/lib/rate-limiter";
+import { NextRequest, NextResponse } from 'next/server';
+import { ValidationSchema } from '@/lib/validations';
+import { checkRateLimit } from '@/lib/rate-limiter';
 
 export async function POST(request: NextRequest) {
   try {
     // 1. Get client IP for rate limiting
-    const ip = request.headers.get("x-forwarded-for") || "unknown";
-    
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+
     // 2. Check rate limit
     const rateLimit = checkRateLimit(ip);
     if (!rateLimit.allowed) {
       return NextResponse.json(
         {
-          error: "Rate limit exceeded",
-          message: "Maximum 10 requests per 10 minutes",
-          code: "RATE_LIMIT_EXCEEDED",
+          error: 'Rate limit exceeded',
+          message: 'Maximum 10 requests per 10 minutes',
+          code: 'RATE_LIMIT_EXCEEDED',
           retryAfter: Math.ceil((rateLimit.resetTime - Date.now()) / 1000),
           resetTime: new Date(rateLimit.resetTime).toISOString(),
         },
         { status: 429 }
       );
     }
-    
+
     // 3. Parse and validate request body
     const body = await request.json();
     const validated = ValidationSchema.parse(body);
-    
+
     // 4. Business logic
     const result = await processRequest(validated);
-    
+
     // 5. Return success response
     return NextResponse.json(result, { status: 200 });
-    
   } catch (error) {
     // 6. Handle errors
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          error: "Validation error",
+          error: 'Validation error',
           message: error.errors[0].message,
-          code: "VALIDATION_ERROR",
+          code: 'VALIDATION_ERROR',
         },
         { status: 400 }
       );
     }
-    
-    console.error("API Error:", error);
+
+    console.error('API Error:', error);
     return NextResponse.json(
       {
-        error: "Internal server error",
-        message: "An unexpected error occurred",
-        code: "INTERNAL_ERROR",
+        error: 'Internal server error',
+        message: 'An unexpected error occurred',
+        code: 'INTERNAL_ERROR',
       },
       { status: 500 }
     );
@@ -220,15 +223,15 @@ export default function MyComponent({
 }: MyComponentProps) {
   // 1. Hooks at top
   const [localState, setLocalState] = useState("");
-  
+
   // 2. Derived state
   const isValid = value.length > 0;
-  
+
   // 3. Event handlers
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     onChange(e.target.value);
   };
-  
+
   // 4. Render
   return (
     <div className="...">
@@ -244,7 +247,7 @@ export default function MyComponent({
 
 ```typescript
 // lib/validations.ts
-import { z } from "zod";
+import { z } from 'zod';
 
 export const MySchema = z.object({
   field: z.string().min(1).max(100),
@@ -270,6 +273,7 @@ const validated = MySchema.parse(body);
 ```
 
 **Error codes:**
+
 - `VALIDATION_ERROR` - Bad input (400)
 - `RATE_LIMIT_EXCEEDED` - Too many requests (429)
 - `MODEL_UNAVAILABLE` - HF model down (503)
@@ -283,7 +287,7 @@ const validated = MySchema.parse(body);
 // lib/rate-limiter.ts
 class RateLimiter {
   private requests: Map<string, RateLimitEntry> = new Map();
-  
+
   check(identifier: string): {
     allowed: boolean;
     remaining: number;
@@ -295,6 +299,7 @@ class RateLimiter {
 ```
 
 **Usage:**
+
 - 10 requests per 10 minutes per IP
 - Automatic cleanup of expired entries
 - Returns `retryAfter` in error response
@@ -307,14 +312,14 @@ class RateLimiter {
 // lib/huggingface.ts
 export async function queryModel(options: HFQueryOptions) {
   const startTime = Date.now();
-  
+
   const response = await fetch(
     `https://api-inference.huggingface.co/models/${options.modelId}`,
     {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         inputs: options.prompt,
@@ -325,16 +330,16 @@ export async function queryModel(options: HFQueryOptions) {
       }),
     }
   );
-  
+
   // Handle cold starts (retry once with longer timeout)
   if (response.status === 503) {
-    await new Promise(resolve => setTimeout(resolve, 60000));
+    await new Promise((resolve) => setTimeout(resolve, 60000));
     // Retry logic...
   }
-  
+
   const data = await response.json();
   const totalTime = (Date.now() - startTime) / 1000;
-  
+
   return {
     output: data[0].generated_text,
     metrics: {
@@ -349,18 +354,21 @@ export async function queryModel(options: HFQueryOptions) {
 ## Design Decisions
 
 ### Why Next.js App Router?
+
 - Built-in API routes (no separate backend needed)
 - Server components for better performance
 - Easy Vercel deployment
 - Excellent TypeScript support
 
 ### Why Zod for Validation?
+
 - Single source of truth for types and validation
 - Better error messages than manual checks
 - Industry standard in Next.js ecosystem
 - Compile-time + runtime safety
 
 ### Why In-Memory Rate Limiting?
+
 - Zero external dependencies (free)
 - Fast implementation
 - Good enough for portfolio demo
@@ -369,12 +377,14 @@ export async function queryModel(options: HFQueryOptions) {
 **Known Limitation:** Resets on serverless cold starts. Acceptable for MVP.
 
 ### Why HuggingFace Over OpenRouter?
+
 - Free tier available (no cost barrier)
 - More control over model selection
 - Learning opportunity (handling cold starts, retries)
 - Shows resourcefulness in interviews
 
 ### Why Static Benchmarks?
+
 - Provides context (compare with GPT-4, Claude)
 - No API costs for closed models
 - Shows data modeling skills
@@ -407,11 +417,13 @@ REDIS_URL=redis://...                   # For persistent rate limiting
 **Build Command:** `npm run build`
 
 **Environment:**
+
 - Node.js 18+
 - Serverless functions (default)
 - Edge runtime (future optimization)
 
 **Monitoring:**
+
 - Vercel Analytics (default)
 - Error tracking: Sentry (optional)
 - API usage: HuggingFace dashboard
@@ -427,16 +439,19 @@ REDIS_URL=redis://...                   # For persistent rate limiting
 ## Scalability
 
 ### MVP (Current)
+
 - In-memory rate limiting
 - Serverless functions
 - Static models.json
 
 ### Phase 2 (Future)
+
 - Redis rate limiting (persistent)
 - Database for comparison history
 - CDN for static assets
 
 ### Phase 3 (Future)
+
 - Streaming responses (SSE)
 - WebSocket for real-time updates
 - Caching layer for repeated prompts
@@ -444,18 +459,21 @@ REDIS_URL=redis://...                   # For persistent rate limiting
 ## Testing Strategy
 
 ### Unit Tests (Vitest)
+
 - Validation schemas
 - Utility functions
 - Rate limiter logic
 - Model data helpers
 
 ### E2E Tests (Playwright)
+
 - Full comparison flow
 - Rate limiting enforcement
 - Error states
 - Mobile responsive
 
 ### Manual Testing Checklist
+
 - [ ] Live comparison works for 3 models
 - [ ] Rate limiting triggers after 10 requests
 - [ ] Cold start handled gracefully
@@ -467,19 +485,17 @@ REDIS_URL=redis://...                   # For persistent rate limiting
 
 1. **Cold Starts:** HF models can take 30-60s to wake up
    - **Mitigation:** Loading messages, retry logic, user education
-   
 2. **Rate Limiting Resets:** In-memory state lost on serverless cold starts
    - **Mitigation:** Acceptable for MVP, document limitation
-   
 3. **Static Data Staleness:** Benchmarks become outdated
    - **Mitigation:** Clear date labels, benchmark runner agent
-   
 4. **No Streaming:** Users wait for full response
    - **Mitigation:** Progress indicators, Phase 3 feature
 
 ## Future Architecture
 
 ### Streaming Implementation (Phase 3)
+
 ```
 Client (EventSource)
     ↓
@@ -491,6 +507,7 @@ Token-by-token updates
 ```
 
 ### Database Integration (Phase 4)
+
 ```
 PostgreSQL (via Supabase)
 ├── users (future auth)

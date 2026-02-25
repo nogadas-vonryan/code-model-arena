@@ -1,6 +1,7 @@
 # API Endpoint Creation Prompt
 
 ## Context
+
 Use this prompt when creating new API routes in the Code Model Arena project.
 
 ## Prompt Template
@@ -144,6 +145,7 @@ After AI generates the code, verify:
 ## Common Pitfalls to Avoid
 
 **Don't:**
+
 - Skip rate limiting
 - Use `any` types
 - Swallow errors silently
@@ -152,6 +154,7 @@ After AI generates the code, verify:
 - Skip input validation
 
 **Do:**
+
 - Follow the established pattern exactly
 - Use Zod for validation
 - Return consistent error responses

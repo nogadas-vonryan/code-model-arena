@@ -1,7 +1,7 @@
-import { ModelResult, ModelMetrics } from "@/types/models";
-import { estimateTokens, sleep } from "@/lib/utils";
+import { ModelResult, ModelMetrics } from '@/types/models';
+import { estimateTokens, sleep } from '@/lib/utils';
 
-const HF_API_BASE = "https://api-inference.huggingface.co/models";
+const HF_API_BASE = 'https://api-inference.huggingface.co/models';
 
 interface HFResponse {
   generated_text: string;
@@ -28,14 +28,14 @@ async function queryHF(
   const apiKey = process.env.HUGGINGFACE_API_KEY;
 
   if (!apiKey) {
-    throw new Error("HUGGINGFACE_API_KEY is not configured");
+    throw new Error('HUGGINGFACE_API_KEY is not configured');
   }
 
   const response = await fetch(`${HF_API_BASE}/${modelId}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
       Authorization: `Bearer ${apiKey}`,
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       inputs: prompt,
@@ -49,10 +49,10 @@ async function queryHF(
   if (response.status === 503) {
     await sleep(60000);
     const retryResponse = await fetch(`${HF_API_BASE}/${modelId}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         inputs: prompt,
@@ -65,12 +65,12 @@ async function queryHF(
 
     if (!retryResponse.ok) {
       const errorData = (await retryResponse.json()) as HFError;
-      throw new Error(errorData.error || "Model unavailable after retry");
+      throw new Error(errorData.error || 'Model unavailable after retry');
     }
 
     const data = (await retryResponse.json()) as HFResponse[];
     const totalTime = (Date.now() - startTime) / 1000;
-    return { output: data[0]?.generated_text || "", totalTime };
+    return { output: data[0]?.generated_text || '', totalTime };
   }
 
   if (!response.ok) {
@@ -80,12 +80,14 @@ async function queryHF(
 
   const data = (await response.json()) as HFResponse[];
   const totalTime = (Date.now() - startTime) / 1000;
-  return { output: data[0]?.generated_text || "", totalTime };
+  return { output: data[0]?.generated_text || '', totalTime };
 }
 
-export async function queryModel(options: HFQueryOptions): Promise<ModelResult> {
+export async function queryModel(
+  options: HFQueryOptions
+): Promise<ModelResult> {
   const { modelId, prompt, maxTokens = 256, temperature } = options;
-  const modelName = modelId.split("/").pop() || modelId;
+  const modelName = modelId.split('/').pop() || modelId;
 
   try {
     const { output, totalTime } = await queryHF(
@@ -109,20 +111,20 @@ export async function queryModel(options: HFQueryOptions): Promise<ModelResult> 
       modelName,
       output,
       metrics,
-      status: "success",
+      status: 'success',
     };
   } catch (error) {
     return {
       modelId,
       modelName,
-      output: "",
+      output: '',
       metrics: {
         totalTime: 0,
         tokenCount: 0,
         tokensPerSecond: 0,
       },
-      error: error instanceof Error ? error.message : "Unknown error",
-      status: "error",
+      error: error instanceof Error ? error.message : 'Unknown error',
+      status: 'error',
     };
   }
 }

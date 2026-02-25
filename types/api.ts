@@ -1,4 +1,4 @@
-import { ModelType } from "./models";
+import { ModelType } from './models';
 
 export interface CompareRequest {
   prompt: string;
@@ -7,7 +7,7 @@ export interface CompareRequest {
 }
 
 export interface CompareResponse {
-  results: import("./models").ModelResult[];
+  results: import('./models').ModelResult[];
   comparisonId: string;
   timestamp: string;
 }
@@ -28,7 +28,7 @@ export interface ErrorResponse {
 }
 
 export interface HealthResponse {
-  status: "ok" | "degraded";
+  status: 'ok' | 'degraded';
   timestamp: string;
   version: string;
 }

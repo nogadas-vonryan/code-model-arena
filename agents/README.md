@@ -50,6 +50,7 @@ agents/
 ## File Purposes
 
 ### ARCHITECTURE.md
+
 - Tech stack overview
 - Project structure
 - Design patterns (rate limiting, validation, error handling)
@@ -57,6 +58,7 @@ agents/
 - Integration points (HuggingFace API, etc.)
 
 ### STYLE_GUIDE.md
+
 - TypeScript conventions
 - React patterns
 - Naming conventions
@@ -65,7 +67,9 @@ agents/
 - Testing patterns
 
 ### PROMPTS/
+
 Reusable templates for common tasks:
+
 - Creating API endpoints
 - Building React components
 - Writing tests
@@ -83,6 +87,7 @@ Reusable templates for common tasks:
 ### For AI Assistants
 
 When a developer references these files:
+
 1. **Read carefully** - These are project-specific rules
 2. **Ask for clarification** - If something conflicts, ask the developer
 3. **Suggest improvements** - If you spot inconsistencies, mention them
@@ -94,13 +99,13 @@ When a developer references these files:
 
 **Developer:** "Create an API endpoint for comparing models"
 
-**AI:** *Creates endpoint with inconsistent error handling, wrong validation library, different file structure*
+**AI:** _Creates endpoint with inconsistent error handling, wrong validation library, different file structure_
 
 ### Context-Aware Workflow with agents/
 
 **Developer:** "Read agents/ARCHITECTURE.md and agents/PROMPTS/api-endpoint.md, then create an API endpoint for comparing models"
 
-**AI:** *Creates endpoint following project patterns: Zod validation, rate limiting, proper error responses, correct folder structure*
+**AI:** _Creates endpoint following project patterns: Zod validation, rate limiting, proper error responses, correct folder structure_
 
 ## Maintenance
 
@@ -114,4 +119,3 @@ When a developer references these files:
 - See `skills/` directory for automated scripts/agents
 - See `openapi/` for API contract documentation
 - See main `README.md` for project setup
-

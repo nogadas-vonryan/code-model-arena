@@ -1,4 +1,4 @@
-import { RateLimitInfo } from "@/types/api";
+import { RateLimitInfo } from '@/types/api';
 
 const MAX_REQUESTS = 10;
 const WINDOW_MS = 10 * 60 * 1000;

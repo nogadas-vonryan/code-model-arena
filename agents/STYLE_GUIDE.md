@@ -11,6 +11,7 @@ This style guide ensures consistency across the codebase and helps AI assistants
 ### Type Definitions
 
 **DO:** Use interfaces for object shapes
+
 ```typescript
 interface User {
   id: string;
@@ -20,22 +21,29 @@ interface User {
 ```
 
 **DO:** Use type aliases for unions and complex types
+
 ```typescript
-type Status = "success" | "error" | "pending";
-type ModelType = "open" | "closed";
+type Status = 'success' | 'error' | 'pending';
+type ModelType = 'open' | 'closed';
 ```
 
 **DO:** Export types alongside implementation
+
 ```typescript
 // lib/models.ts
-export interface Model { /* ... */ }
-export function getModel(id: string): Model { /* ... */ }
+export interface Model {
+  /* ... */
+}
+export function getModel(id: string): Model {
+  /* ... */
+}
 ```
 
 **DON'T:** Use `any` type
+
 ```typescript
 // Bad
-function process(data: any) { }
+function process(data: any) {}
 
 // Good
 function process(data: unknown) {
@@ -46,29 +54,31 @@ function process(data: unknown) {
 ### Naming Conventions
 
 **Files:**
+
 - Components: `PascalCase.tsx` (e.g., `PromptInput.tsx`)
 - Utilities: `camelCase.ts` (e.g., `rate-limiter.ts`)
 - Types: `camelCase.ts` (e.g., `models.ts`)
 - Constants: `UPPER_SNAKE_CASE.ts` (e.g., `API_CONSTANTS.ts`)
 
 **Variables:**
+
 - `camelCase` for variables and functions
 - `PascalCase` for components and classes
 - `UPPER_SNAKE_CASE` for constants
 
 ```typescript
 // Variables
-const userName = "John";
+const userName = 'John';
 const isValid = true;
 
 // Functions
-function getUserById(id: string) { }
+function getUserById(id: string) {}
 
 // Components
-function UserProfile() { }
+function UserProfile() {}
 
 // Classes
-class RateLimiter { }
+class RateLimiter {}
 
 // Constants
 const MAX_REQUESTS = 10;
@@ -76,6 +86,7 @@ const API_TIMEOUT = 30000;
 ```
 
 **Booleans:** Use `is`, `has`, `should` prefixes
+
 ```typescript
 const isLoading = true;
 const hasError = false;
@@ -83,20 +94,23 @@ const shouldRetry = true;
 ```
 
 **Arrays:** Use plural nouns
+
 ```typescript
-const users = ["Alice", "Bob"];
-const modelIds = ["gpt-4", "claude-3"];
+const users = ['Alice', 'Bob'];
+const modelIds = ['gpt-4', 'claude-3'];
 ```
 
 ### Functions
 
 **DO:** Use arrow functions for inline callbacks
+
 ```typescript
 models.map((model) => model.id);
-models.filter((model) => model.type === "open");
+models.filter((model) => model.type === 'open');
 ```
 
 **DO:** Use function declarations for named exports
+
 ```typescript
 export function calculateMetrics(data: ModelResult) {
   // Implementation
@@ -104,6 +118,7 @@ export function calculateMetrics(data: ModelResult) {
 ```
 
 **DO:** Use async/await over promises
+
 ```typescript
 // Good
 async function fetchData() {
@@ -115,18 +130,19 @@ async function fetchData() {
 // Bad
 function fetchData() {
   return fetch(url)
-    .then(res => res.json())
-    .then(data => data);
+    .then((res) => res.json())
+    .then((data) => data);
 }
 ```
 
 **DO:** Early returns for guard clauses
+
 ```typescript
 // Good
 function processUser(user: User | null) {
   if (!user) return null;
   if (!user.isActive) return null;
-  
+
   return user.name;
 }
 
@@ -144,38 +160,41 @@ function processUser(user: User | null) {
 ### Imports
 
 **Order:** External → Internal → Types → Styles
+
 ```typescript
 // 1. External libraries
-import { useState, useEffect } from "react";
-import { z } from "zod";
+import { useState, useEffect } from 'react';
+import { z } from 'zod';
 
 // 2. Internal modules (absolute paths)
-import { getModels } from "@/lib/models";
-import { CompareRequest } from "@/types";
+import { getModels } from '@/lib/models';
+import { CompareRequest } from '@/types';
 
 // 3. Components
-import Button from "@/components/ui/Button";
+import Button from '@/components/ui/Button';
 
 // 4. Styles (if any)
-import styles from "./Component.module.css";
+import styles from './Component.module.css';
 ```
 
 **DO:** Use absolute paths with `@/` alias
+
 ```typescript
 // Good
-import { queryModel } from "@/lib/huggingface";
+import { queryModel } from '@/lib/huggingface';
 
 // Bad
-import { queryModel } from "../../../lib/huggingface";
+import { queryModel } from '../../../lib/huggingface';
 ```
 
 **DO:** Use named imports
+
 ```typescript
 // Good
-import { getModels, filterModels } from "@/lib/models";
+import { getModels, filterModels } from '@/lib/models';
 
 // Bad (unless default export)
-import * as models from "@/lib/models";
+import * as models from '@/lib/models';
 ```
 
 ## React Conventions
@@ -183,6 +202,7 @@ import * as models from "@/lib/models";
 ### Component Structure
 
 **Standard component template:**
+
 ```typescript
 "use client"; // Only if using hooks or browser APIs
 
@@ -190,7 +210,7 @@ import { useState } from "react";
 
 /**
  * ComponentName - Brief description
- * 
+ *
  * @example
  * <ComponentName value="test" onChange={handleChange} />
  */
@@ -208,30 +228,30 @@ export default function ComponentName({
 }: ComponentNameProps) {
   // 1. Hooks
   const [localState, setLocalState] = useState("");
-  
+
   // 2. Derived state
   const isValid = value.length > 0;
-  
+
   // 3. Effects
   useEffect(() => {
     // Side effects
   }, [dependency]);
-  
+
   // 4. Event handlers
   const handleClick = () => {
     onChange(value);
   };
-  
+
   // 5. Render helpers (if needed)
   const renderStatus = () => {
     return <span>{isValid ? "Valid" : "Invalid"}</span>;
   };
-  
+
   // 6. Early returns (loading, error states)
   if (disabled) {
     return <div>Component disabled</div>;
   }
-  
+
   // 7. Main render
   return (
     <div className="...">
@@ -244,6 +264,7 @@ export default function ComponentName({
 ### Hooks
 
 **DO:** Custom hooks for reusable logic
+
 ```typescript
 // hooks/useRateLimit.ts
 export function useRateLimit(limit: number) {
@@ -254,11 +275,13 @@ export function useRateLimit(limit: number) {
 ```
 
 **DO:** Destructure hook returns
+
 ```typescript
 const { data, error, isLoading } = useFetch(url);
 ```
 
 **DON'T:** Call hooks conditionally
+
 ```typescript
 // Bad
 if (condition) {
@@ -275,9 +298,10 @@ if (condition) {
 ### Props
 
 **DO:** Destructure props in function signature
+
 ```typescript
 // Good
-function Component({ name, age }: Props) { }
+function Component({ name, age }: Props) {}
 
 // Bad
 function Component(props: Props) {
@@ -286,14 +310,13 @@ function Component(props: Props) {
 ```
 
 **DO:** Provide default values for optional props
+
 ```typescript
-function Component({
-  variant = "primary",
-  disabled = false,
-}: Props) { }
+function Component({ variant = 'primary', disabled = false }: Props) {}
 ```
 
 **DON'T:** Pass entire objects as props (spread carefully)
+
 ```typescript
 // Bad (prop drilling)
 <Child {...everything} />
@@ -305,16 +328,19 @@ function Component({
 ### Conditional Rendering
 
 **DO:** Use ternary for simple conditions
+
 ```typescript
 {isLoading ? <Spinner /> : <Content />}
 ```
 
 **DO:** Use `&&` for single conditions
+
 ```typescript
 {error && <ErrorMessage error={error} />}
 ```
 
 **DO:** Use early returns for complex conditions
+
 ```typescript
 if (isLoading) return <Spinner />;
 if (error) return <ErrorMessage error={error} />;
@@ -326,11 +352,13 @@ return <Content />;
 ### Class Names
 
 **DO:** Use Tailwind utility classes
+
 ```typescript
 <div className="flex items-center justify-between p-4 bg-white rounded-lg">
 ```
 
 **DO:** Group related utilities (layout → spacing → colors → effects)
+
 ```typescript
 // Good - Grouped logically
 <div className="flex flex-col gap-4 p-6 bg-white border rounded-lg shadow-sm">
@@ -340,6 +368,7 @@ return <Content />;
 ```
 
 **DO:** Use `cn()` helper for conditional classes
+
 ```typescript
 import { cn } from "@/lib/utils";
 
@@ -354,6 +383,7 @@ import { cn } from "@/lib/utils";
 ```
 
 **DON'T:** Mix Tailwind with inline styles
+
 ```typescript
 // Bad
 <div className="p-4" style={{ padding: "16px" }}>
@@ -365,11 +395,13 @@ import { cn } from "@/lib/utils";
 ### Responsive Design
 
 **DO:** Use mobile-first responsive utilities
+
 ```typescript
 <div className="w-full md:w-1/2 lg:w-1/3">
 ```
 
 **DO:** Stack layouts on mobile
+
 ```typescript
 <div className="flex flex-col md:flex-row gap-4">
 ```
@@ -379,60 +411,60 @@ import { cn } from "@/lib/utils";
 ### Route Structure
 
 **Standard API route template:**
+
 ```typescript
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { checkRateLimit } from "@/lib/rate-limiter";
-import { ValidationSchema } from "@/lib/validations";
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { checkRateLimit } from '@/lib/rate-limiter';
+import { ValidationSchema } from '@/lib/validations';
 
 export async function POST(request: NextRequest) {
   try {
     // 1. Get client identifier
-    const ip = request.headers.get("x-forwarded-for") || "unknown";
-    
+    const ip = request.headers.get('x-forwarded-for') || 'unknown';
+
     // 2. Rate limiting
     const rateLimit = checkRateLimit(ip);
     if (!rateLimit.allowed) {
       return NextResponse.json(
         {
-          error: "Rate limit exceeded",
-          message: "Maximum 10 requests per 10 minutes",
-          code: "RATE_LIMIT_EXCEEDED",
+          error: 'Rate limit exceeded',
+          message: 'Maximum 10 requests per 10 minutes',
+          code: 'RATE_LIMIT_EXCEEDED',
           retryAfter: Math.ceil((rateLimit.resetTime - Date.now()) / 1000),
         },
         { status: 429 }
       );
     }
-    
+
     // 3. Parse & validate
     const body = await request.json();
     const validated = ValidationSchema.parse(body);
-    
+
     // 4. Business logic
     const result = await processRequest(validated);
-    
+
     // 5. Success response
     return NextResponse.json(result, { status: 200 });
-    
   } catch (error) {
     // 6. Error handling
     if (error instanceof z.ZodError) {
       return NextResponse.json(
         {
-          error: "Validation error",
+          error: 'Validation error',
           message: error.errors[0].message,
-          code: "VALIDATION_ERROR",
+          code: 'VALIDATION_ERROR',
         },
         { status: 400 }
       );
     }
-    
-    console.error("API Error:", error);
+
+    console.error('API Error:', error);
     return NextResponse.json(
       {
-        error: "Internal server error",
-        message: "An unexpected error occurred",
-        code: "INTERNAL_ERROR",
+        error: 'Internal server error',
+        message: 'An unexpected error occurred',
+        code: 'INTERNAL_ERROR',
       },
       { status: 500 }
     );
@@ -443,6 +475,7 @@ export async function POST(request: NextRequest) {
 ### Error Responses
 
 **DO:** Use consistent error format
+
 ```typescript
 {
   "error": "Error type",
@@ -453,6 +486,7 @@ export async function POST(request: NextRequest) {
 ```
 
 **Error Status Codes:**
+
 - `400` - Bad request (validation errors)
 - `429` - Rate limit exceeded
 - `500` - Internal server error
@@ -463,25 +497,28 @@ export async function POST(request: NextRequest) {
 ### When to Comment
 
 **DO:** Comment complex logic
+
 ```typescript
 // Calculate tokens per second, handling edge case where totalTime is 0
 const tokensPerSecond = totalTime > 0 ? tokenCount / totalTime : 0;
 ```
 
 **DO:** Comment non-obvious decisions
+
 ```typescript
 // Retry once on 503 (cold start) with 60s delay
 if (response.status === 503) {
-  await new Promise(resolve => setTimeout(resolve, 60000));
+  await new Promise((resolve) => setTimeout(resolve, 60000));
   // Retry logic...
 }
 ```
 
 **DO:** Use JSDoc for exported functions
+
 ```typescript
 /**
  * Query a HuggingFace model with the given prompt
- * 
+ *
  * @param modelId - HuggingFace model identifier
  * @param prompt - Code generation prompt
  * @returns Model output and performance metrics
@@ -493,25 +530,28 @@ export async function queryModel(modelId: string, prompt: string) {
 ```
 
 **DON'T:** Comment obvious code
+
 ```typescript
 // Bad
 // Set user name to John
-const userName = "John";
+const userName = 'John';
 
 // Bad
 // Loop through models
-models.forEach((model) => { });
+models.forEach((model) => {});
 ```
 
 ### TODO Comments
 
 **DO:** Use TODO for future work
+
 ```typescript
 // TODO: Implement streaming response
 // TODO: Add retry logic with exponential backoff
 ```
 
 **DO:** Include context in TODOs
+
 ```typescript
 // TODO: Replace with Redis when scaling (in-memory resets on cold start)
 ```
@@ -521,18 +561,19 @@ models.forEach((model) => { });
 ### Unit Tests
 
 **Structure:** Arrange, Act, Assert
-```typescript
-import { describe, it, expect } from "vitest";
 
-describe("calculateMetrics", () => {
-  it("calculates tokens per second correctly", () => {
+```typescript
+import { describe, it, expect } from 'vitest';
+
+describe('calculateMetrics', () => {
+  it('calculates tokens per second correctly', () => {
     // Arrange
     const tokenCount = 100;
     const totalTime = 10;
-    
+
     // Act
     const result = calculateMetrics(tokenCount, totalTime);
-    
+
     // Assert
     expect(result.tokensPerSecond).toBe(10);
   });
@@ -542,10 +583,11 @@ describe("calculateMetrics", () => {
 ### Test Naming
 
 **Pattern:** `should [expected behavior] when [condition]`
+
 ```typescript
-it("should return error when prompt is too short", () => { });
-it("should retry once when model returns 503", () => { });
-it("should calculate metrics correctly when time is non-zero", () => { });
+it('should return error when prompt is too short', () => {});
+it('should retry once when model returns 503', () => {});
+it('should calculate metrics correctly when time is non-zero', () => {});
 ```
 
 ## Error Handling
@@ -553,6 +595,7 @@ it("should calculate metrics correctly when time is non-zero", () => { });
 ### Try-Catch Blocks
 
 **DO:** Catch specific errors
+
 ```typescript
 try {
   const validated = schema.parse(data);
@@ -565,6 +608,7 @@ try {
 ```
 
 **DO:** Log errors appropriately
+
 ```typescript
 catch (error) {
   console.error("Failed to fetch model:", error);
@@ -573,6 +617,7 @@ catch (error) {
 ```
 
 **DON'T:** Swallow errors silently
+
 ```typescript
 // Bad
 try {
@@ -589,6 +634,7 @@ try {
 **Format:** `type(scope): message`
 
 **Types:**
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation
@@ -598,6 +644,7 @@ try {
 - `chore` - Build/tooling
 
 **Examples:**
+
 ```
 feat(api): add rate limiting to compare endpoint
 fix(ui): resolve mobile layout overflow issue
@@ -608,6 +655,7 @@ refactor(lib): extract validation logic to separate file
 ### Branch Naming
 
 **Pattern:** `type/description`
+
 ```
 feature/streaming-responses
 fix/rate-limit-reset
@@ -620,18 +668,20 @@ refactor/validation-layer
 ### Barrel Exports
 
 **DO:** Use index.ts for cleaner imports
+
 ```typescript
 // types/index.ts
-export * from "./models";
-export * from "./api";
+export * from './models';
+export * from './api';
 
 // Usage
-import { Model, CompareRequest } from "@/types";
+import { Model, CompareRequest } from '@/types';
 ```
 
 ### Co-location
 
 **DO:** Keep related files together
+
 ```
 components/
   PromptInput/
@@ -645,11 +695,13 @@ components/
 ### React Performance
 
 **DO:** Use React.memo for expensive components
+
 ```typescript
 export default React.memo(ExpensiveComponent);
 ```
 
 **DO:** Memoize expensive calculations
+
 ```typescript
 const expensiveValue = useMemo(() => {
   return calculateExpensiveValue(data);
@@ -657,6 +709,7 @@ const expensiveValue = useMemo(() => {
 ```
 
 **DO:** Debounce user input
+
 ```typescript
 const debouncedSearch = useMemo(
   () => debounce((value) => search(value), 300),
@@ -667,6 +720,7 @@ const debouncedSearch = useMemo(
 ## Accessibility
 
 **DO:** Use semantic HTML
+
 ```typescript
 <button> instead of <div onClick>
 <nav> for navigation
@@ -674,6 +728,7 @@ const debouncedSearch = useMemo(
 ```
 
 **DO:** Add ARIA labels where needed
+
 ```typescript
 <button aria-label="Close dialog" onClick={onClose}>
   <XIcon />
@@ -681,6 +736,7 @@ const debouncedSearch = useMemo(
 ```
 
 **DO:** Support keyboard navigation
+
 ```typescript
 <div
   role="button"
@@ -696,6 +752,7 @@ const debouncedSearch = useMemo(
 ### Common Patterns
 
 **Loading State:**
+
 ```typescript
 if (isLoading) return <LoadingSpinner />;
 if (error) return <ErrorMessage error={error} />;
@@ -703,8 +760,9 @@ return <Content data={data} />;
 ```
 
 **Form Handling:**
+
 ```typescript
-const [value, setValue] = useState("");
+const [value, setValue] = useState('');
 const handleSubmit = (e: React.FormEvent) => {
   e.preventDefault();
   // Handle submit
@@ -712,6 +770,7 @@ const handleSubmit = (e: React.FormEvent) => {
 ```
 
 **API Call:**
+
 ```typescript
 const [data, setData] = useState(null);
 const [error, setError] = useState(null);
@@ -719,11 +778,10 @@ const [isLoading, setIsLoading] = useState(false);
 
 useEffect(() => {
   setIsLoading(true);
-  fetch("/api/endpoint")
-    .then(res => res.json())
+  fetch('/api/endpoint')
+    .then((res) => res.json())
     .then(setData)
     .catch(setError)
     .finally(() => setIsLoading(false));
 }, []);
 ```
-
