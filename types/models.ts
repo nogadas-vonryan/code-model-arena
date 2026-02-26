@@ -35,6 +35,7 @@ export interface ModelMetrics {
   totalTime: number;
   tokenCount: number;
   tokensPerSecond: number;
+  timeToFirstToken?: number;
 }
 
 export interface ModelResult {

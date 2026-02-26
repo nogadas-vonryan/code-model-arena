@@ -8,8 +8,12 @@ export interface CompareRequest {
 
 export interface CompareResponse {
   results: import('./models').ModelResult[];
-  comparisonId: string;
-  timestamp: string;
+  metadata: {
+    timestamp: string;
+    totalModels: number;
+    successfulModels: number;
+    failedModels: number;
+  };
 }
 
 export interface ModelFilterParams {
@@ -31,6 +35,7 @@ export interface HealthResponse {
   status: 'ok' | 'degraded';
   timestamp: string;
   version: string;
+  uptime: number;
 }
 
 export interface RateLimitInfo {
