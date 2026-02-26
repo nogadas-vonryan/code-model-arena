@@ -272,7 +272,7 @@ paths:
                 properties:
                   status:
                     type: string
-                    example: 'healthy'
+                    example: 'ok'
                   timestamp:
                     type: string
                     format: date-time
@@ -396,7 +396,7 @@ components:
           $ref: '#/components/schemas/Metrics'
         status:
           type: string
-          enum: [success, error, timeout, cold_start]
+          enum: [success, error, loading]
           description: Result status
         error:
           type: string
@@ -446,41 +446,37 @@ components:
         - name
         - type
         - provider
-        - apiProvider
+        - modelId
       properties:
         id:
           type: string
-          example: 'codellama/CodeLlama-7b-Instruct-hf'
+          example: 'codellama-7b'
         name:
           type: string
           example: 'CodeLlama 7B'
         type:
           type: string
-          enum: [open]
-          example: 'open'
-        size:
-          type: string
-          description: Model parameter size
-          example: '7B'
+          enum: [live]
+          example: 'live'
         provider:
           type: string
-          example: 'Meta'
-        specialization:
-          type: string
-          enum: [code, general, multilingual]
-          example: 'code'
-        apiProvider:
-          type: string
-          enum: [huggingface]
           example: 'huggingface'
-        estimatedCostPer1M:
-          type: number
-          format: float
-          description: Estimated cost per 1M tokens (USD)
-          example: 0.15
+        modelId:
+          type: string
+          description: HuggingFace model identifier
+          example: 'codellama/CodeLlama-7b-hf'
         description:
           type: string
-          example: 'Code-specialized LLaMA model fine-tuned for code generation'
+          example: "Meta's code-specialized Llama model, fine-tuned for code generation and completion."
+        contextWindow:
+          type: integer
+          description: Maximum context window size
+          example: 16384
+        tags:
+          type: array
+          items:
+            type: string
+          example: ['code-generation', 'python', 'javascript', 'open-source']
 
     StaticBenchmark:
       type: object
@@ -489,46 +485,48 @@ components:
         - name
         - type
         - provider
-        - avgResponseTime
-        - costPer1M
-        - benchmarkedDate
       properties:
         id:
           type: string
-          example: 'gpt-4-turbo'
+          example: 'gpt-4'
         name:
           type: string
-          example: 'GPT-4 Turbo'
+          example: 'GPT-4'
         type:
           type: string
-          enum: [closed]
-          example: 'closed'
+          enum: [static]
+          example: 'static'
         provider:
           type: string
           example: 'OpenAI'
-        specialization:
+        benchmarkUrl:
           type: string
-          enum: [code, general, multilingual]
-          example: 'general'
-        avgResponseTime:
-          type: number
-          format: float
-          description: Average response time in seconds
-          example: 2.8
-        costPer1M:
-          type: number
-          format: float
-          description: Cost per 1M tokens (USD)
-          example: 10.0
-        benchmarkedDate:
+          description: URL to benchmark results
+          example: 'https://openai.com/research/gpt-4'
+        description:
           type: string
-          format: date
-          description: When the benchmark was last run
-          example: '2025-01-15'
-        source:
-          type: string
-          description: Source of benchmark data
-          example: 'Manual testing'
+          example: "OpenAI's flagship model with exceptional code generation and reasoning abilities."
+        benchmarks:
+          type: object
+          properties:
+            humanEval:
+              type: number
+              example: 67.0
+            mbpp:
+              type: number
+              example: 74.4
+            multipl-e:
+              type: number
+              example: 88.4
+        contextWindow:
+          type: integer
+          description: Maximum context window size
+          example: 128000
+        tags:
+          type: array
+          items:
+            type: string
+          example: ['code-generation', 'reasoning', 'closed-source']
 
     ModelsResponse:
       type: object
